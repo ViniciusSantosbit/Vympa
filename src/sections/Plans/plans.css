@@ -1,0 +1,86 @@
+#planos,
+#como-funciona,
+.hero {
+  scroll-margin-top: calc(var(--navbar-height) + 16px);
+}
+.proposals-section,
+.how-section {
+  padding: 88px 40px;
+  border-top: 1px solid var(--color-border);
+}
+.proposals-section {
+  min-height: 55svh;
+  background: var(--color-surface);
+}
+.how-section {
+  min-height: calc(100svh - var(--navbar-height));
+  background: var(--color-background);
+}
+.section-copy {
+  max-width: 900px;
+}
+.section-eyebrow {
+  color: var(--color-accent);
+  font-size: 11px;
+  line-height: 1.6;
+  letter-spacing: 0.14em;
+  font-weight: 600;
+  margin: 0 0 20px;
+}
+.section-copy h2 {
+  color: var(--color-primary);
+  font-size: clamp(30px, 3.2vw, 46px);
+  line-height: 1.18;
+  letter-spacing: -0.035em;
+  font-weight: 550;
+  margin: 0 0 24px;
+  max-width: 760px;
+}
+.section-description {
+  color: var(--color-secondary);
+  font-size: 16px;
+  line-height: 1.8;
+  margin: 0;
+  max-width: 730px;
+}
+.proposals-context {
+  color: var(--color-secondary);
+  border-left: 2px solid var(--color-highlight);
+  padding-left: 18px;
+  margin: 28px 0 0;
+  font-size: 15px;
+  line-height: 1.8;
+  max-width: 730px;
+}
+.how-steps {
+  padding: 0;
+  list-style-position: inside;
+  margin: 44px 0 0;
+  display: grid;
+  gap: 28px;
+}
+.how-steps li {
+  color: var(--color-accent);
+}
+.how-steps h3 {
+  display: inline;
+  color: var(--color-primary);
+  margin: 0;
+  font-size: 17px;
+  font-weight: 550;
+}
+.how-steps p {
+  margin: 8px 0 0;
+  color: var(--color-secondary);
+  font-size: 15px;
+  line-height: 1.7;
+}
+@media (max-width: 599px) {
+  .proposals-section,
+  .how-section {
+    padding: 64px 24px;
+  }
+  .section-description {
+    font-size: 15px;
+  }
+}

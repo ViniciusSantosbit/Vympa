@@ -1,0 +1,27 @@
+@theme {
+  --color-background: #060d18;
+  --color-surface: #101e32;
+  --color-primary: #ffffff;
+  --color-secondary: #bac7d8;
+  --color-brand: #00a7ec;
+  --color-accent: #7ffbfd;
+  --color-hero-copy: #d9e3ed;
+  --color-hero-action-ink: #052032;
+  --color-hero-highlight: #85dcfa;
+  --color-highlight: #68dda8;
+  --color-border: #26374d;
+  --font-sans: 'Segoe UI', system-ui, sans-serif;
+  --spacing: 0.25rem;
+  --radius-sm: 0.375rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1.25rem;
+}
+
+:root {
+  --navbar-height: 84px;
+}
+@media (max-width: 1099px) {
+  :root {
+    --navbar-height: 72px;
+  }
+}
