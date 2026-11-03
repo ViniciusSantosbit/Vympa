@@ -9,6 +9,7 @@
   border-top: 1px solid var(--color-border);
 }
 .proposals-section {
+  border-top: 0;
   min-height: 55svh;
   background: var(--color-background);
 }
@@ -257,6 +258,7 @@
 
 /* Alinhamento central da apresentacao e dos cards de planos. */
 .proposals-section {
+  border-top: 0;
   text-align: center;
 }
 .proposals-section .section-copy,
@@ -274,4 +276,64 @@
 .proposals-section .plan-features li,
 .proposals-section .plan-cta {
   justify-content: center;
+}
+
+/* Hierarquia do cabecalho inspirada na referencia aprovada. */
+.proposals-section .section-eyebrow {
+  display: inline-block;
+  border: 1px solid currentColor;
+  padding: 6px 14px;
+  margin-bottom: 30px;
+  line-height: 1.3;
+}
+.proposals-section .section-copy {
+  max-width: 1080px;
+}
+.proposals-section .section-copy h2 {
+  max-width: 1000px;
+  font-size: clamp(36px, 4.4vw, 64px);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+  margin-bottom: 28px;
+}
+.proposals-section .section-description {
+  max-width: 820px;
+  font-size: 17px;
+}
+.proposals-section .plans-grid {
+  max-width: 1200px;
+}
+.proposals-section .plan-card {
+  padding: 28px;
+}
+.proposals-section .plan-card h3 {
+  min-height: 68px;
+}
+.proposals-section .plan-description {
+  min-height: 96px;
+}
+.proposals-section .plan-features {
+  gap: 12px;
+}
+@media (max-width: 899px) {
+  .proposals-section .plans-grid {
+    max-width: 640px;
+  }
+  .proposals-section .plan-card h3,
+  .proposals-section .plan-description {
+    min-height: 0;
+  }
+}
+@media (max-width: 599px) {
+  .proposals-section .section-copy h2 {
+    font-size: clamp(32px, 8.5vw, 44px);
+  }
+  .proposals-section .section-description {
+    font-size: 15px;
+  }
+  .proposals-section .plan-card {
+    padding: 24px;
+  }
 }

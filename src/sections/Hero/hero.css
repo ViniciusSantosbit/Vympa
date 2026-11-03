@@ -403,3 +403,22 @@
     }
   }
 }
+
+/* Dissolve o fim da fotografia no mesmo fundo da secao seguinte. */
+.hero-background::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: clamp(160px, 24svh, 260px);
+  pointer-events: none;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  mask-image: linear-gradient(to bottom, transparent, black 45%);
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    color-mix(in srgb, var(--color-background) 40%, transparent) 35%,
+    color-mix(in srgb, var(--color-background) 85%, transparent) 70%,
+    var(--color-background) 96%
+  );
+}
