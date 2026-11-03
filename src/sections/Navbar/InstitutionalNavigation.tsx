@@ -1,8 +1,10 @@
 import type { ReactElement } from 'react'
 import { SectionLink } from '@/components/common/SectionLink'
 export function InstitutionalNavigation({
+  resultsAvailable = false,
   onNavigate,
 }: {
+  resultsAvailable?: boolean
   onNavigate?: () => void
 }): ReactElement {
   return (
@@ -26,9 +28,19 @@ export function InstitutionalNavigation({
         </SectionLink>
       </li>
       <li>
-        <span className="nav-item" aria-disabled="true">
-          Resultados<span className="sr-only"> — disponível em breve</span>
-        </span>
+        {resultsAvailable ? (
+          <SectionLink
+            section="resultados"
+            className="nav-item"
+            onNavigate={onNavigate}
+          >
+            Resultados
+          </SectionLink>
+        ) : (
+          <span className="nav-item" aria-disabled="true">
+            Resultados<span className="sr-only"> — disponível em breve</span>
+          </span>
+        )}
       </li>
     </ul>
   )

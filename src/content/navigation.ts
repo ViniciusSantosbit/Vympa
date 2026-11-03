@@ -1,14 +1,22 @@
 import type { SegmentId } from '@/types/content'
 export const proposalsContent = {
   eyebrow: 'SOLUÇÕES VYMPA',
-  title: 'Soluções para transformar sua operação',
-  titles: {
-    advocacia: 'Soluções para escritórios de advocacia',
-    contabilidade: 'Soluções para escritórios de contabilidade',
-    imobiliarias: 'Soluções para empresas imobiliárias',
-  } satisfies Record<SegmentId, string>,
+  title: 'Soluções desenvolvidas para a sua operação.',
   description:
-    'Sistemas personalizados com inteligência artificial e automação de processos e fluxos operacionais, com soluções alinhadas às necessidades da sua operação.',
+    'Da modernização dos seus sistemas à automação de processos, desenvolvemos soluções adaptadas às necessidades do seu negócio.',
+  titles: {
+    advocacia: 'Tecnologia sob medida para o seu escritório de advocacia.',
+    contabilidade: 'Mais eficiência para a sua operação contábil.',
+    imobiliarias: 'Soluções inteligentes para sua operação imobiliária.',
+  } satisfies Record<SegmentId, string>,
+  descriptions: {
+    advocacia:
+      'Da gestão de informações jurídicas aos fluxos administrativos, desenvolvemos sistemas e automações adaptados à rotina do seu escritório.',
+    contabilidade:
+      'Da organização de documentos à integração de rotinas, desenvolvemos sistemas e automações alinhados aos processos do seu escritório contábil.',
+    imobiliarias:
+      'Da centralização de informações comerciais à organização de operações, desenvolvemos sistemas e automações para o contexto da sua imobiliária.',
+  } satisfies Record<SegmentId, string>,
 }
 export const howItWorksContent = {
   eyebrow: 'COMO FUNCIONA',

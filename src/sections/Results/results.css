@@ -1,0 +1,122 @@
+#resultados {
+  scroll-margin-top: calc(var(--navbar-height) + 16px);
+}
+.clients-section {
+  padding: 88px 40px;
+  border-top: 1px solid var(--color-border);
+  background: var(--color-background);
+  text-align: center;
+}
+.clients-heading {
+  max-width: 760px;
+  margin-inline: auto;
+}
+.clients-heading h2 {
+  color: var(--color-primary);
+  font-size: clamp(28px, 3.2vw, 44px);
+  line-height: 1.2;
+  font-weight: 550;
+  letter-spacing: -0.035em;
+  margin: 0 0 20px;
+  text-wrap: balance;
+}
+.clients-heading > p:last-child {
+  color: var(--color-secondary);
+  font-size: 16px;
+  line-height: 1.7;
+  margin: 0;
+}
+.client-carousel {
+  max-width: 1200px;
+  margin: 44px auto 0;
+  min-width: 0;
+}
+.clients-viewport {
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+  padding: 8px 0 14px;
+}
+.clients-viewport[data-overflow='true'] {
+  cursor: grab;
+}
+.clients-viewport[data-overflow='true']:active {
+  cursor: grabbing;
+}
+.clients-track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  gap: 28px;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+  user-select: none;
+}
+.client-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 190px;
+  height: 116px;
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  padding: 18px;
+}
+.client-logo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.clients-controls {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+.clients-controls button {
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-accent);
+  font-size: 22px;
+  cursor: pointer;
+}
+.clients-controls button:disabled {
+  color: var(--color-secondary);
+  opacity: 0.45;
+  cursor: default;
+}
+@media (max-width: 599px) {
+  .clients-section {
+    padding: 64px 24px;
+  }
+  .clients-heading > p:last-child {
+    font-size: 15px;
+  }
+  .clients-track {
+    gap: 24px;
+  }
+  .client-logo {
+    width: 150px;
+    height: 100px;
+    padding: 14px;
+  }
+}
+
+.clients-eyebrow {
+  color: var(--color-accent);
+  font-size: 11px;
+  line-height: 1.6;
+  letter-spacing: 0.14em;
+  font-weight: 600;
+  margin: 0 0 20px;
+}

@@ -10,7 +10,7 @@
 }
 .proposals-section {
   min-height: 55svh;
-  background: var(--color-surface);
+  background: var(--color-background);
 }
 .how-section {
   min-height: calc(100svh - var(--navbar-height));
@@ -43,15 +43,6 @@
   margin: 0;
   max-width: 730px;
 }
-.proposals-context {
-  color: var(--color-secondary);
-  border-left: 2px solid var(--color-highlight);
-  padding-left: 18px;
-  margin: 28px 0 0;
-  font-size: 15px;
-  line-height: 1.8;
-  max-width: 730px;
-}
 .how-steps {
   padding: 0;
   list-style-position: inside;
@@ -82,5 +73,183 @@
   }
   .section-description {
     font-size: 15px;
+  }
+}
+
+.plans-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 24px;
+  max-width: 1320px;
+  margin-top: 48px;
+}
+.plan-card {
+  --plan-accent: var(--color-accent);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 32px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  transition:
+    border-color 180ms ease,
+    transform 180ms ease;
+}
+.plan-card[data-service='automacao-processos'] {
+  --plan-accent: var(--color-highlight);
+}
+.plan-identity {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  color: var(--plan-accent);
+  font-size: 11px;
+  letter-spacing: 0.075em;
+  text-transform: uppercase;
+  font-weight: 600;
+  min-height: 32px;
+  padding-bottom: 24px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--color-border);
+}
+.plan-identity svg {
+  flex-shrink: 0;
+}
+.plan-content {
+  flex: 1;
+}
+.plan-card h3 {
+  font-size: clamp(24px, 2.1vw, 30px);
+  line-height: 1.22;
+  font-weight: 550;
+  letter-spacing: -0.025em;
+  color: var(--color-primary);
+  min-height: 74px;
+  margin: 0 0 20px;
+  text-wrap: balance;
+}
+.plan-description {
+  color: var(--color-secondary);
+  font-size: 15px;
+  line-height: 1.75;
+  min-height: 106px;
+  margin: 0 0 28px;
+}
+.plan-list-label {
+  font-size: 11px;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  font-weight: 600;
+  margin: 0 0 20px;
+}
+.plan-features {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.plan-features li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  color: var(--color-secondary);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.plan-features li > span:first-child {
+  color: var(--plan-accent);
+  flex-shrink: 0;
+}
+.plan-contact {
+  margin-top: 36px;
+}
+.plan-cta {
+  display: flex;
+  width: 100%;
+  min-height: 52px;
+  padding: 14px 18px;
+  border: 1px solid var(--plan-accent);
+  border-radius: var(--radius-md);
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--plan-accent);
+  background: transparent;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+}
+.plan-cta:disabled {
+  cursor: not-allowed;
+  border-color: var(--color-border);
+  color: var(--color-secondary);
+}
+.plan-contact-status {
+  font-size: 12px;
+  color: var(--color-secondary);
+  margin: 10px 0 0;
+  line-height: 1.5;
+}
+.plans-notes {
+  max-width: 1050px;
+  margin-top: 28px;
+  color: var(--color-secondary);
+  font-size: 12px;
+  line-height: 1.7;
+}
+.plans-notes p {
+  margin: 8px 0 0;
+}
+@media (hover: hover) {
+  .plan-card:hover {
+    border-color: var(--plan-accent);
+    transform: translateY(-3px);
+  }
+  .plan-cta[href]:hover {
+    background: color-mix(in srgb, var(--plan-accent) 9%, transparent);
+  }
+}
+@media (max-width: 899px) {
+  .plans-grid {
+    grid-template-columns: 1fr;
+    max-width: 680px;
+  }
+  .plan-card h3,
+  .plan-description {
+    min-height: 0;
+  }
+}
+@media (max-width: 599px) {
+  .plans-grid {
+    margin-top: 36px;
+    gap: 20px;
+  }
+  .plan-card {
+    padding: 24px;
+  }
+  .plan-identity {
+    font-size: 10px;
+    gap: 12px;
+  }
+  .plan-description {
+    font-size: 14px;
+  }
+  .plan-cta {
+    font-size: 12px;
+    padding-inline: 14px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .plan-card {
+    transition: none;
+  }
+  .plan-card:hover {
+    transform: none;
   }
 }

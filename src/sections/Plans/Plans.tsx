@@ -1,11 +1,11 @@
 import type { ReactElement } from 'react'
 import { proposalsContent } from '@/content/navigation'
-import { segmentos } from '@/content/segmentos'
+import { planos, plansLabels } from '@/content/planos'
 import { useSegment } from '@/features/segment-selection/useSegment'
+import { PlanCard } from './PlanCard'
 import './plans.css'
 export function Plans(): ReactElement {
   const { selectedSegment } = useSegment()
-  const segment = segmentos.find((item) => item.id === selectedSegment)
   return (
     <section
       id="planos"
@@ -20,10 +20,24 @@ export function Plans(): ReactElement {
             ? proposalsContent.titles[selectedSegment]
             : proposalsContent.title}
         </h2>
-        <p className="section-description">{proposalsContent.description}</p>
-        {segment && (
-          <p className="proposals-context">{segment.descricaoApoio}</p>
-        )}
+        <p className="section-description">
+          {selectedSegment
+            ? proposalsContent.descriptions[selectedSegment]
+            : proposalsContent.description}
+        </p>
+      </div>
+      <div className="plans-grid">
+        {planos.map((service) => (
+          <PlanCard
+            key={service.id}
+            service={service}
+            segment={selectedSegment}
+          />
+        ))}
+      </div>
+      <div className="plans-notes">
+        <p>{plansLabels.scope}</p>
+        <p>{plansLabels.authorizedUse}</p>
       </div>
     </section>
   )

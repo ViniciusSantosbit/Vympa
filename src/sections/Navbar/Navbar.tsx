@@ -5,7 +5,11 @@ import { InstitutionalNavigation } from './InstitutionalNavigation'
 import { SectionLink } from '@/components/common/SectionLink'
 import { MobileMenu } from './MobileMenu'
 import './navbar.css'
-export function Navbar(): ReactElement {
+export function Navbar({
+  resultsAvailable = false,
+}: {
+  resultsAvailable?: boolean
+}): ReactElement {
   const [scrolled, setScrolled] = useState(() => window.scrollY > 24)
   const [menuOpen, setMenuOpen] = useState(false)
   const dialogRef = useRef<HTMLDialogElement>(null)
@@ -44,7 +48,7 @@ export function Navbar(): ReactElement {
           <nav className="desktop-navigation" aria-label="Navegação principal">
             <SegmentSelector />
             <span className="navbar-divider" aria-hidden="true" />
-            <InstitutionalNavigation />
+            <InstitutionalNavigation resultsAvailable={resultsAvailable} />
           </nav>
           <button
             ref={toggleRef}
@@ -74,6 +78,7 @@ export function Navbar(): ReactElement {
         </div>
       </header>
       <MobileMenu
+        resultsAvailable={resultsAvailable}
         dialogRef={dialogRef}
         onClose={() => {
           setMenuOpen(false)

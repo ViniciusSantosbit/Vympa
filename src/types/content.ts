@@ -6,17 +6,26 @@ export interface Segment {
   referenciaVisual: string | null
   contextoWhatsApp: string | null
 }
+export type ServiceId = 'servico-ia' | 'automacao-processos'
+export interface ServiceVariant {
+  titulo: string
+  descricao: string
+  exemplos: readonly string[]
+}
 export interface Service {
-  id: 'servico-ia' | 'automacao-processos'
+  id: ServiceId
   nome: string
-  descricao: string | null
+  descricao: string
   entregas: readonly string[]
-  chamadaContato: string | null
+  chamadaContato: string
+  segmentos: Readonly<Record<SegmentId, ServiceVariant>>
 }
 export interface Client {
   id: string
   nome: string
   logoUrl: string | null
+  textoAlternativo: string
+  autorizadoParaDivulgacao: boolean
   segmento: SegmentId | null
 }
 export interface Simulation {

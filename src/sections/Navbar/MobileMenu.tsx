@@ -2,9 +2,11 @@ import type { ReactElement, RefObject } from 'react'
 import { SegmentSelector } from './SegmentSelector'
 import { InstitutionalNavigation } from './InstitutionalNavigation'
 export function MobileMenu({
+  resultsAvailable = false,
   dialogRef,
   onClose,
 }: {
+  resultsAvailable?: boolean
   dialogRef: RefObject<HTMLDialogElement | null>
   onClose: () => void
 }): ReactElement {
@@ -53,6 +55,7 @@ export function MobileMenu({
           <SegmentSelector onSelect={() => dialogRef.current?.close()} />
           <div className="mobile-divider" />
           <InstitutionalNavigation
+            resultsAvailable={resultsAvailable}
             onNavigate={() => dialogRef.current?.close()}
           />
         </nav>

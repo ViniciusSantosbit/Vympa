@@ -1,6 +1,6 @@
 # VYMPA Landing
 
-S00 a S03 concluídos. S04 a S13 não iniciados. Projeto criado diretamente na pasta Vympa, inicialmente vazia, pelo template oficial React/TypeScript do Vite.
+S00 a S05 concluídos. S06 a S13 não iniciados. Projeto criado diretamente na pasta Vympa, inicialmente vazia, pelo template oficial React/TypeScript do Vite.
 
 ## Ambiente e instalação
 
@@ -121,3 +121,74 @@ Arquivos novos: src/lib/sectionNavigation.ts, src/hooks/useSectionNavigation.ts,
 ### Contrato para S04
 
 Expandir a seção existente src/sections/Plans/Plans.tsx, preservando id planos, planos-title e consumo de useSegment. Usar os dois serviços já tipados em src/content/planos.ts; não recriar o destino nem a navegação. SectionId reserva resultados e nosso-time, sem disponibilizar links enquanto as seções não existirem. S04 não iniciado; sem cards, preços, WhatsApp, resultados, backend ou publicação.
+
+## S04 — Cards de soluções
+
+A seção existente planos foi expandida com exatamente dois PlanCard reutilizáveis: servico-ia e automacao-processos. O id planos, planos-title, consumo de useSegment e controlador do S03 foram preservados. Navbar, hero, animações de luz/desfoque e lógica de rolagem não foram alterados. Atualizar o conteúdo dos cards não cria outro efeito de navegação.
+
+Dados em src/content/planos.ts: nome institucional, descrição geral, cinco entregas principais, CTA e Record tipado com título, descrição e aplicações por segmento. Estado null exibe os dois serviços institucionais; Advocacia, Contabilidade e Imobiliárias usam o mesmo componente com dados contextualizados. Títulos e descrições da seção estão em src/content/navigation.ts. Exemplos são possibilidades conforme escopo, sem alegações de funcionalidades já entregues, preços, garantias, clientes ou resultados fictícios. Nota de uso autorizado e respeito às licenças acompanha os cards.
+
+PlanCard.tsx organiza identificação, ícone SVG decorativo, h3, descrição, lista HTML e contato. Grid de duas colunas em desktop; uma coluna abaixo de 900px. Cards têm alturas equilibradas e CTAs alinhados por flex/grid. Tipografia e espaçamentos adaptam no mobile. Atualização de conteúdo é imediata, sem timers, estado duplicado ou animação de entrada que esconda textos. Hover discreto, removido para prefers-reduced-motion. Não há novas dependências ou requisições externas.
+
+### Contato comercial
+
+src/lib/whatsapp.ts expõe buildServiceMessage(serviceId, segment) e buildWhatsAppUrl(phone, message). Mensagem identifica serviço e segmento, com contexto geral para null. Número é validado sintaticamente em formato internacional (8–15 dígitos, código do país sem zero inicial; aceita + e pontuação usual). Isso não verifica titularidade nem existência de conta. URL HTTPS wa.me usa encodeURIComponent. Links configurados usam target _blank e rel noopener noreferrer.
+
+src/content/contatos.ts permanece com whatsapp null. Os dois CTAs estão disabled e associados à informação Contato oficial em configuração; nenhum link de teste é gerado ou aberto. A única pendência para ativar os CTAs é receber e configurar o número oficial confirmado da VYMPA. Não foram criados botões flutuantes.
+
+### Arquivos S04
+
+Criados: src/sections/Plans/PlanCard.tsx, src/lib/whatsapp.ts e tests/plans.test.mjs.
+Alterados: src/sections/Plans/Plans.tsx e plans.css, src/content/planos.ts, src/content/navigation.ts, src/types/content.ts e README.md. AGENTS.md e os scripts anteriores foram preservados. Não houve commit, push, deploy ou início do S05 nesta etapa.
+
+### Validação S04
+
+- npm run test: 15 testes aprovados, incluindo SSR React dos dois cards no estado geral e nos três segmentos, preservação do id planos, ausência de preços/links inválidos, CTAs indisponíveis, mensagens para os oito pares serviço/segmento e validação/codificação da URL. A suíte anterior de navegação também passou. Um número sintético reservado existe somente como fixture de teste; nunca foi configurado como contato nem aberto no navegador.
+- npm run typecheck, npm run lint, npm run format:check e npm run build executados.
+- Navegador em 1600×900 e 1440×900: dois cards lado a lado, alturas e posições dos CTAs equivalentes. Estado inicial geral, os três segmentos e alternâncias rápidas conferidos; última seleção Imobiliárias mantida nos dois cards.
+- Tablet 768×1024 e mobile 390×844: cards empilhados, sem cortes ou overflow horizontal. Seleção por Enter no menu mantém fechamento, foco em planos-title e destino a 88px do topo, abaixo da navbar de 72px. Desktop mantém destino a 100px, abaixo da navbar de 84px.
+- Conheça os planos alcança o mesmo destino. Console sem novos erros/avisos, zero âncoras quebradas e zero links WhatsApp enquanto o número estiver ausente. Não foram enviadas mensagens externas.
+- Regras CSS de movimento reduzido conferidas. A suíte do S03 testa o caminho de preferência reduzida com matchMedia simulado; o navegador não expõe emulação visual completa dessa preferência.
+
+### Handoff S05
+
+Cards e contratos dos serviços estão prontos, com contatos centralizados e utilitário de mensagem reutilizável. A base de clientes permanece em src/content/clientes.ts, vazia, com tipo Client compartilhado. Para um carrossel real serão necessários nomes/logos e autorização de uso dos clientes; nenhum conteúdo de clientes foi inventado. S05 não iniciado.
+
+## S05 — Clientes autorizados e carrossel
+
+Implementados src/sections/Results/{Results.tsx,ClientCarousel.tsx,ClientLogo.tsx,results.css}, com validação em src/lib/clients.ts. public/images/clientes/.gitkeep preserva a pasta de imagens oficiais. O tipo Client existente ganhou textoAlternativo e autorizadoParaDivulgacao, sem duplicação de interfaces; logoUrl e segmento foram mantidos.
+
+O array src/content/clientes.ts continua vazio: não foram fornecidos clientes reais ou autorizações de divulgação. Assim, Results retorna null, sem títulos, mensagens de estado vazio, espaço extra ou id resultados. Registros válidos aguardam uma imagem carregada antes de tornar a seção visível. Erros removem o logo; se todos falharem, o módulo inteiro desaparece. Imagens inicialmente pendentes não geram falsa prova social. O primeiro logo é carregado eager; os demais usam lazy loading e dimensões reservadas.
+
+### Cadastro de clientes reais
+
+1. Obter autorização expressa de divulgação fora do código. O booleano não substitui essa autorização.
+2. Colocar o arquivo oficial, sem recoloração, em public/images/clientes/. Formatos aceitos: SVG, PNG ou WebP. Usar nomes previsíveis com letras, números, hífen ou sublinhado.
+3. Adicionar um registro Client em src/content/clientes.ts: id estável, nome, logoUrl com caminho absoluto /images/clientes/arquivo.ext, textoAlternativo significativo, autorizadoParaDivulgacao e segmento (ou null).
+4. Manter autorizadoParaDivulgacao false enquanto a divulgação não estiver autorizada. Campo ausente não implica aprovação.
+
+A validação rejeita ID inválido, nome/alt vazios, fonte ausente ou fora da pasta local, formatos não aceitos, duplicações por ID, nome normalizado ou arquivo. Apenas autorizadoParaDivulgacao === true pode aparecer. O carregamento real verifica a imagem. Não são baixadas marcas da internet, criados links externos ou expostos leads/parceiros como clientes.
+
+### Comportamento e acessibilidade
+
+Sem clientes válidos: nenhum bloco. Poucos logos que cabem: centralizados, sem controles ou movimento automático. Overflow real: ResizeObserver mede viewport e trilho; surgem setas Anterior/Próximo, com limites corretos, scroll snap, scrollbar nativa e rolagem horizontal controlada pelo usuário. Não há clones de marcas, autoplay ou limite baseado apenas em contagem.
+
+Logos preservam proporções e cores, com áreas moderadas de 190×116px no desktop e 150×100px no mobile. Teclado: região focável quando há overflow, setas direcionais, Home e End, além dos botões semânticos. Foco visível e nomes acessíveis; sem anúncios repetitivos. Mouse pode arrastar; touch permanece nativo, sem bloqueio de gestos verticais. prefers-reduced-motion seleciona scroll instantâneo. Não há efeitos contínuos ou filtros nos logos.
+
+App integra Results após Como funciona. O estado local de disponibilidade habilita o link Resultados no desktop e mobile somente quando a seção real existe. A única alteração na navbar foi essa disponibilidade opcional, sem redesign. Não foi criado outro Context API nem outra lógica de navegação. Hero e cards S04 não foram alterados nesta etapa; suas mudanças anteriores foram preservadas.
+
+### Arquivos e testes S05
+
+Novos: src/lib/clients.ts; os quatro arquivos de Results; public/images/clientes/.gitkeep; tests/clients.test.mjs, clients-harness.tsx, clients-harness.html e clients-browser-server.mjs. Removido apenas o .gitkeep da pasta Results, agora implementada. Alterados: src/content/clientes.ts, src/types/content.ts, src/app/App.tsx, Navbar.tsx, MobileMenu.tsx, InstitutionalNavigation.tsx e README. tests/plans.test.mjs recebeu isolamento de cache/WebSocket para testes SSR paralelos; isso elimina conflito de porta sem mudar a aplicação. AGENTS.md preservado.
+
+npm run test: 18 testes aprovados, incluindo autorização, integridade, duplicados, contagem, limites por largura, estado vazio SSR, conteúdo aguardando imagem válida e ativação condicional do link Resultados. Suítes de planos/WhatsApp e navegação também passaram. npm run typecheck, npm run lint, npm run format:check e npm run build foram executados.
+
+Para reproduzir o QA visual: node tests/clients-browser-server.mjs e abrir http://127.0.0.1:5174/tests/clients-harness.html. Servidor restrito a localhost. Fixtures sintéticas são geradas somente em memória por esse servidor de testes; não há arquivos de marcas fictícias em public. O build normal inclui apenas a entrada da aplicação, sem harness ou fixtures.
+
+Navegador: 1600×900, 1440×900, 768×1024 e 390×844. Conferidos 0, 1, 2, 3 e 12 logos, autorização negada, referência inválida, imagem que falha, duplicados e recuperação quando a primeira imagem falha mas outra é válida. Setas, limites inicial/final, Home/End, Enter, foco visível e arraste por mouse passaram. Três logos cabem no tablet e exigem carrossel no mobile; em orientação 844×390 voltam a caber e os controles desaparecem. Sem overflow horizontal da página. Console sem novos erros/avisos no harness ou na página real.
+
+Na aplicação real, array vazio confirmado, sem seção/id/link ativo de Resultados; dois cards preservados e seleção Contabilidade continuou navegando a planos abaixo da navbar. Zero âncoras quebradas. Toque em aparelho físico e emulação real de prefers-reduced-motion não estavam disponíveis; não são declarados como testes executados.
+
+### Pendência e handoff S06
+
+Pendente somente o fornecimento de clientes reais, arquivos oficiais e autorização expressa para tornar a prova social pública. O S05 funciona corretamente vazio. O S06 poderá adicionar seu gráfico dentro de Results, preservando o único id resultados e ampliando a disponibilidade para conteúdo visível de clientes OU gráfico. ClientCarousel e ClientLogo não precisam ser modificados; o bloco de clientes continuará condicionado a marcas válidas. Nenhum gráfico, simulação, depoimento, equipe, integração externa, push ou deploy foi implementado neste script. S06 não iniciado.
