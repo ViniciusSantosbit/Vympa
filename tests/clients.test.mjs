@@ -80,8 +80,8 @@ test('estado vazio, autorização e marcas aguardando imagem válida', async () 
     appType: 'custom',
   })
   try {
-    const { Results } = await server.ssrLoadModule(
-      '/src/sections/Results/Results.tsx',
+    const { ClientShowcase: Results } = await server.ssrLoadModule(
+      '/src/sections/Results/ClientShowcase.tsx',
     )
     assert.equal(renderToStaticMarkup(createElement(Results)), '')
     assert.equal(

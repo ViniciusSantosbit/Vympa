@@ -28,11 +28,16 @@ export interface Client {
   autorizadoParaDivulgacao: boolean
   segmento: SegmentId | null
 }
-export interface Simulation {
-  descricao: string | null
-  premissas: readonly string[]
-  resultado: number | null
-  unidade: string | null
+export interface GrowthSimulation {
+  aprovacao: 'pendente' | 'aprovada'
+  tradicional: readonly number[]
+  comIA: readonly number[]
+}
+export interface ComparisonPoint {
+  mes: number
+  tradicional: number
+  comIA: number
+  diferenca: number
 }
 export interface TeamMember {
   id: string

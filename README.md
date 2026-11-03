@@ -1,6 +1,6 @@
 # VYMPA Landing
 
-S00 a S05 concluídos. S06 a S13 não iniciados. Projeto criado diretamente na pasta Vympa, inicialmente vazia, pelo template oficial React/TypeScript do Vite.
+S00 a S06 implementados e validados localmente. S07 a S13 não iniciados. Premissas S06 pendentes de aprovação para publicação. Projeto criado diretamente na pasta Vympa, inicialmente vazia, pelo template oficial React/TypeScript do Vite.
 
 ## Ambiente e instalação
 
@@ -192,3 +192,55 @@ Na aplicação real, array vazio confirmado, sem seção/id/link ativo de Result
 ### Pendência e handoff S06
 
 Pendente somente o fornecimento de clientes reais, arquivos oficiais e autorização expressa para tornar a prova social pública. O S05 funciona corretamente vazio. O S06 poderá adicionar seu gráfico dentro de Results, preservando o único id resultados e ampliando a disponibilidade para conteúdo visível de clientes OU gráfico. ClientCarousel e ClientLogo não precisam ser modificados; o bloco de clientes continuará condicionado a marcas válidas. Nenhum gráfico, simulação, depoimento, equipe, integração externa, push ou deploy foi implementado neste script. S06 não iniciado.
+
+## S06 — Comparação financeira ilustrativa
+
+Um único gráfico SVG nativo, sem nova biblioteca ou dependência, foi integrado à seção Resultados. A escolha permite duas séries, escala numérica, pontos mensais, interação por ponteiro/clique/toque, seletor de mês por teclado e tabela HTML equivalente sem adicionar uma biblioteca de gráficos para essa necessidade restrita.
+
+### Arquitetura e arquivos
+
+Criados: src/lib/financialComparison.ts; src/sections/Results/{ClientShowcase.tsx,FinancialComparison.tsx,ComparisonChart.tsx,comparison.css}; tests/financialComparison.test.mjs. Alterados: src/content/simulacao.ts, src/types/content.ts, src/sections/Results/Results.tsx, tests/clients.test.mjs, tests/clients-harness.tsx e README.md. O bloco de clientes do S05 foi extraído para ClientShowcase sem alterar ClientCarousel ou ClientLogo. Navbar, hero, cards, imagens e controlador de navegação não foram alterados.
+
+Results é o único dono do id resultados e compõe clientes opcionais + comparação. O gráfico está disponível mesmo sem clientes; o callback existente de disponibilidade habilita o link Resultados. ClientShowcase retorna null quando não há clientes válidos e remove imagens com erro, preservando a ausência de espaço vazio. Não há IDs duplicados no modo combinado.
+
+### Modelo e validação
+
+Para cada mês m: C_tradicional = m × custoTradicionalMensal; C_ia = investimentoInicial + m × (custoOperacionalIA + manutencaoMensalIA); diferença = C_tradicional − C_ia. Regras em calculateComparison, sem fórmulas financeiras duplicadas na interface. Cálculos intermediários em centavos inteiros; saídas numéricas em reais. Custos devem ser finitos, não negativos, com até duas casas decimais e dentro do limite inteiro seguro. Horizonte inteiro entre 1 e 120; zero é rejeitado. Valores que estouram a precisão segura são rejeitados. Configuração inválida mostra mensagem de revisão, sem gráfico, NaN ou Infinity.
+
+Pontos incluem mês zero (tradicional 0, IA com implantação inicial) até o horizonte. Equilíbrio é o primeiro ponto com diferença >= 0, incluindo mês zero, conforme explicado na interface. Sem equilíbrio no horizonte: Não atingido no período simulado. Diferença negativa é descrita como maior custo acumulado com IA; igualdade tem mensagem própria. O equilíbrio inicial no mês zero não garante vantagem nos meses seguintes.
+
+Formatação monetária única via Intl.NumberFormat pt-BR/BRL. O mesmo FinancialResult alimenta as duas linhas, resumo, valores inspecionados e tabela. Eixo Y inicia em zero, com teto calculado sobre ambas as séries; linha tradicional cinza tracejada e linha IA verde #68DDA8 contínua, diferenciadas por texto e padrão além de cor. Todos os pontos mensais são renderizados; rótulos X são espaçados conforme largura/horizonte, mantendo todos os meses disponíveis no seletor e tabela.
+
+### Premissas e status editorial
+
+Fixture demonstrativa do roteiro: 12 meses, custo tradicional 10.000/mês, operacional IA 7.000/mês, manutenção 500/mês e implantação 12.000. Mesmo volume de trabalho, sem quantidade inventada. Resultado: tradicional 120.000; IA 102.000; diferença hipotética 18.000; primeiro equilíbrio no mês 5. Custos constantes, sem inflação, tributos adicionais ou desconto a valor presente. Não são orçamento, preços oficiais ou resultados reais.
+
+simulacao.aprovacao permanece pendente. Publicação em produção depende da aprovação expressa das premissas e valores pela VYMPA. A interface mostra o aviso integral exigido junto ao gráfico, status pendente e identificação hipotética dentro da própria figura. Troca de segmento altera somente a introdução editorial: não existem parâmetros financeiros setoriais inventados.
+
+### Interação, responsividade e acessibilidade
+
+Ponteiro e clique/toque selecionam o mês mais próximo; o painel informativo permanece visível. Range nativo permite todos os meses, Home/End e setas, com aria-valuetext contendo os valores completos. Tabela acessível em details nativo, cabeçalhos semânticos, caption, mês zero e todos os pontos; container focável com rolagem horizontal interna. Nenhuma informação depende só de hover, tooltip ou cor.
+
+SVG ajusta o viewBox à largura medida, com fonte de eixo em 12px. A altura de 360px ou 260px é reservada via container query, evitando deslocamento externo durante a medição. Tooltip, resumo e premissas empilham no celular. Sem animação de entrada ou progressiva: dados completos aparecem imediatamente inclusive sob movimento reduzido. A rolagem da página continua usando o S03, que já trata essa preferência.
+
+### Validação S06
+
+npm run test: 22 testes aprovados. Cobertura: implantação no mês zero, custos recorrentes, manutenção, diferença, equilíbrio, resultado negativo, igualdade, centavos, horizontes 1/24/120, horizonte zero/inválido, custos negativos/não finitos/precisão excessiva/overflow, formatação BRL e SSR de gráfico/tabela/avisos. Verificados um gráfico, duas séries, 13 linhas de tabela, id resultados único, clientes ausentes sem container, conteúdo por segmento e fallback de configuração inválida. Suítes anteriores também passaram.
+
+npm run typecheck, npm run lint, npm run format:check e npm run build executados. Navegador: 1600×900, 1440×900, 768×1024 e 390×844. Link Resultados funcional, título abaixo da navbar, sem overflow horizontal ou novos erros no console. Mês 1: 10.000 vs 19.500, diferença -9.500; mês 5: 50.000 vs 49.500, diferença 500; mês 12: 120.000 vs 102.000, diferença 18.000. Teclado, ponteiro e abertura da tabela conferidos; tabela mobile rola internamente (largura 688px em viewport 327px), sem alargar a página. Contextos de Advocacia e Imobiliárias e alternâncias rápidas preservaram totais e curvas; a suíte SSR cobre os três segmentos.
+
+Harness isolado do S05 ganhou botão Alternar comparação S06 e SegmentProvider. Testados nenhum, três e doze clientes sintéticos junto ao gráfico, avanço do carrossel e retirada de autorização: um único id resultados e um único gráfico em todos os cenários, sem espaço de clientes quando ocultos. Fixtures continuam fora de public e do build normal. Nenhuma mensagem ou dado financeiro de visitante é coletado/enviado. Toque em aparelho físico e emulação real de movimento reduzido não estão disponíveis; não se declara teste de dispositivo físico. O gráfico é estático quanto a animações por projeto.
+
+### Pendências e handoff S07
+
+Aprovar premissas e valores antes de publicar em produção; até lá são apenas demonstração explicitamente identificada. Clientes reais continuam ausentes, o que não bloqueia a comparação. S07 deve preservar o id resultados, callback de disponibilidade, componente ClientShowcase, dados/cálculos únicos e avisos editoriais. O modelo TeamMember e src/content/equipe.ts continuam preparados e vazios; a seção de equipe não foi implementada. Sem commit, push ou deploy nesta etapa. S07 não iniciado.
+
+## Revisão S06 — comparação conceitual de crescimento
+
+A solicitação posterior do usuário substitui o modelo de custos descrito acima. A seção agora mostra um índice ilustrativo de evolução com base comum 100: trajetória com IA e automação fortemente crescente; trajetória sem IA inicialmente estável e depois decrescente. Os valores são coordenadas de um cenário conceitual, não receita, lucro, produtividade observada, previsão ou resultado garantido da VYMPA. A configuração continua pendente de aprovação para publicação.
+
+Removidos da interface: custos em reais, investimento, manutenção, ponto de equilíbrio, resumo financeiro, bloco de premissas e avisos extensos. Permanece uma indicação curta junto ao gráfico de que se trata de simulação conceitual sem garantia de crescimento. A tabela de índices permanece recolhida como alternativa acessível; tooltip e teclado continuam funcionais.
+
+GrowthComparison e lib/growthComparison.ts substituem os componentes e cálculos financeiros da implementação anterior. Dados em src/content/simulacao.ts e tipo GrowthSimulation. As séries compartilham mês zero e base 100; diferenças são pontos de índice (IA menos cenário sem IA). Testes atualizados para séries válidas, índices finitos e consistência entre gráfico/tabela nos quatro contextos.
+
+Validação da revisão: 21 testes aprovados; typecheck, lint, format:check e build. Navegador em 1440×900 e 390×844: sem overflow horizontal ou novos erros no console; zero blocos de premissas, sem reais no módulo, duas linhas e tabela de 13 meses. Sem publicação ou início do S07.

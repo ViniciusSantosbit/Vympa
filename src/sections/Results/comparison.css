@@ -1,0 +1,222 @@
+.growth-comparison {
+  padding: 88px 40px;
+  border-top: 1px solid var(--color-border);
+  background: var(--color-background);
+}
+.growth-comparison > * {
+  max-width: 1200px;
+  margin-inline: auto;
+}
+.comparison-heading h2 {
+  max-width: 850px;
+  font-size: clamp(30px, 3.2vw, 46px);
+  line-height: 1.18;
+  letter-spacing: -0.035em;
+  font-weight: 550;
+  margin: 0 0 24px;
+}
+.comparison-intro {
+  max-width: 820px;
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--color-secondary);
+  margin: 0;
+}
+.comparison-figure {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  background: var(--color-surface);
+  margin-block: 0 32px;
+}
+.chart-metric {
+  color: var(--color-secondary);
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+.comparison-canvas {
+  width: 100%;
+  min-width: 0;
+}
+.comparison-canvas svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  touch-action: pan-y;
+}
+.chart-grid {
+  stroke: var(--color-border);
+  stroke-width: 1;
+}
+.chart-axis {
+  fill: var(--color-secondary);
+  font: 12px var(--font-sans);
+}
+.chart-line {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+.chart-line--traditional {
+  stroke: var(--color-secondary);
+  stroke-dasharray: 6 5;
+}
+.chart-line--ia {
+  stroke: var(--color-highlight);
+}
+.chart-dot-traditional {
+  fill: var(--color-secondary);
+}
+.chart-dot-ia {
+  fill: var(--color-highlight);
+}
+.chart-cursor {
+  stroke: var(--color-accent);
+  stroke-opacity: 0.35;
+  stroke-dasharray: 3 4;
+}
+.comparison-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 28px;
+  margin: 16px 0 28px;
+  font-size: 13px;
+  color: var(--color-secondary);
+}
+.comparison-legend > span {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.comparison-legend i {
+  width: 25px;
+  border-top: 2px solid var(--color-highlight);
+}
+.comparison-legend .legend-traditional {
+  border-color: var(--color-secondary);
+  border-top-style: dashed;
+}
+.chart-inspector label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+.chart-inspector input {
+  width: 100%;
+  accent-color: var(--color-highlight);
+  min-height: 30px;
+}
+.chart-help {
+  color: var(--color-secondary);
+  font-size: 12px;
+  line-height: 1.7;
+  margin: 8px 0 20px;
+}
+.chart-tooltip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--color-border);
+}
+.chart-tooltip dt {
+  color: var(--color-secondary);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.chart-tooltip dd {
+  margin: 8px 0 0;
+  font-size: 18px;
+}
+.comparison-table-details {
+  border-top: 1px solid var(--color-border);
+  padding-top: 24px;
+  margin-top: 32px;
+}
+.comparison-table-details summary {
+  cursor: pointer;
+  min-height: 44px;
+  color: var(--color-accent);
+}
+.comparison-table-scroll {
+  overflow-x: auto;
+  max-width: 100%;
+}
+.comparison-table-scroll table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 660px;
+  font-size: 13px;
+}
+.comparison-table-scroll caption {
+  text-align: left;
+  color: var(--color-secondary);
+  padding: 18px 0;
+  line-height: 1.7;
+}
+.comparison-table-scroll th,
+.comparison-table-scroll td {
+  padding: 14px;
+  border-bottom: 1px solid var(--color-border);
+  text-align: right;
+  white-space: nowrap;
+}
+.comparison-table-scroll th:first-child {
+  text-align: left;
+}
+
+@media (max-width: 599px) {
+  .growth-comparison {
+    padding: 64px 24px;
+  }
+  .comparison-intro {
+    font-size: 15px;
+  }
+  .comparison-figure {
+    padding: 18px 12px;
+  }
+  .chart-tooltip {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .chart-tooltip > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+  }
+  .chart-tooltip dt {
+    max-width: 180px;
+  }
+  .chart-tooltip dd {
+    white-space: nowrap;
+    font-size: 15px;
+    margin: 0;
+  }
+}
+
+.chart-metric {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px 24px;
+}
+.chart-metric span {
+  font-size: 12px;
+}
+
+.comparison-canvas {
+  container-type: inline-size;
+}
+.comparison-canvas svg {
+  height: 360px;
+}
+@container (max-width: 500px) {
+  .comparison-canvas svg {
+    height: 260px;
+  }
+}
+
+.growth-comparison .comparison-heading {
+  margin-bottom: 36px;
+}

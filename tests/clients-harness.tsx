@@ -1,7 +1,9 @@
+import { Results as CombinedResults } from '../src/sections/Results/Results'
+import { SegmentProvider } from '../src/app/providers/SegmentProvider'
 import { useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import type { Client } from '../src/types/content'
-import { Results } from '../src/sections/Results/Results'
+import { ClientShowcase as Results } from '../src/sections/Results/ClientShowcase'
 import '../src/styles/globals.css'
 const fixture = (id: number, extra: Partial<Client> = {}): Client => ({
   id: 'teste-' + id,
@@ -14,6 +16,7 @@ const fixture = (id: number, extra: Partial<Client> = {}): Client => ({
 })
 export function Harness() {
   const [scenario, setScenario] = useState('0')
+  const [withComparison, setWithComparison] = useState(false)
   const [available, setAvailable] = useState(false)
   const counts = ['0', '1', '2', '3', '12']
   const records = counts.includes(scenario)
@@ -63,11 +66,28 @@ export function Harness() {
             </button>
           ))}
         </div>
+        <button
+          type="button"
+          onClick={() => setWithComparison(!withComparison)}
+        >
+          Alternar comparação S06
+        </button>
         <p role="status">Resultados disponíveis: {available ? 'sim' : 'não'}</p>
       </header>
-      <Results clients={records} onAvailabilityChange={setAvailable} />
+      {withComparison ? (
+        <CombinedResults
+          clients={records}
+          onAvailabilityChange={setAvailable}
+        />
+      ) : (
+        <Results clients={records} onAvailabilityChange={setAvailable} />
+      )}
       <p style={{ padding: 24 }}>Fim do ambiente de testes.</p>
     </>
   )
 }
-createRoot(document.getElementById('root')!).render(<Harness />)
+createRoot(document.getElementById('root')!).render(
+  <SegmentProvider>
+    <Harness />
+  </SegmentProvider>,
+)
