@@ -242,16 +242,34 @@ body:has(.mobile-menu[open]) {
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .mobile-menu[open] {
-    transition: none;
-  }
-  .site-header,
-  .segment-item,
-  .segment-item::after {
-    transition: none;
+  :root:not([data-motion='full']) {
+    .mobile-menu[open] {
+      transition: none;
+    }
+    .site-header,
+    .segment-item,
+    .segment-item::after {
+      transition: none;
+    }
   }
 }
 
 .institutional-links a:hover {
   color: var(--color-accent);
+}
+
+/* Centraliza a navegação na viewport e preserva a marca à esquerda. */
+@media (min-width: 1100px) {
+  .navbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    column-gap: 24px;
+  }
+  .navbar > .brand {
+    justify-self: start;
+  }
+  .desktop-navigation {
+    grid-column: 2;
+    justify-self: center;
+  }
 }

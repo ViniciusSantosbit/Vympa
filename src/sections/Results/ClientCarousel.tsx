@@ -1,3 +1,4 @@
+import { getMotionPreference } from '@/lib/motionPreference'
 import { useEffect, useRef, useState } from 'react'
 import type { ReactElement } from 'react'
 import type { Client } from '@/types/content'
@@ -51,10 +52,7 @@ export function ClientCarousel({
   const move = (direction: -1 | 1, edge = false): void => {
     const viewport = viewportRef.current
     if (!viewport) return
-    const behavior = window.matchMedia('(prefers-reduced-motion: reduce)')
-      .matches
-      ? 'instant'
-      : 'smooth'
+    const behavior = getMotionPreference().matches ? 'instant' : 'smooth'
     if (edge)
       viewport.scrollTo({
         left: direction === -1 ? 0 : viewport.scrollWidth,

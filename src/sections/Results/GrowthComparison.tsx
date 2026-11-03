@@ -21,10 +21,10 @@ export function GrowthComparison({
     <div className="growth-comparison">
       <div className="comparison-heading">
         <p className="clients-eyebrow">{text.eyebrow}</p>
-        <h2 id="comparison-title" tabIndex={-1}>
+        <h2 data-reveal id="comparison-title" tabIndex={-1}>
           {text.title}
         </h2>
-        <p className="comparison-intro">
+        <p data-reveal data-reveal-delay="90" className="comparison-intro">
           {selectedSegment ? text.contexts[selectedSegment] : text.description}
         </p>
       </div>

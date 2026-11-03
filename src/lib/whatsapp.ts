@@ -1,29 +1,41 @@
 import type { SegmentId, ServiceId } from '../types/content'
-const segmentContext: Record<SegmentId, string> = {
-  advocacia: 'meu escritório de advocacia',
-  contabilidade: 'meu escritório de contabilidade',
-  imobiliarias: 'minha imobiliária',
+import { mensagensComerciais } from '../content/contatos.ts'
+export function buildContactMessage(
+  segment: SegmentId | null,
+  serviceId: ServiceId | null = null,
+): string {
+  return mensagensComerciais[serviceId ?? 'geral'][segment ?? 'geral']
 }
 export function buildServiceMessage(
   serviceId: ServiceId,
   segment: SegmentId | null,
 ): string {
-  const context = segment ? segmentContext[segment] : 'minha empresa'
-  return serviceId === 'servico-ia'
-    ? 'Olá! Conheci a VYMPA pelo site e gostaria de conversar sobre uma solução de sistema personalizado com IA para ' +
-        context +
-        '.'
-    : 'Olá! Conheci a VYMPA pelo site e gostaria de saber mais sobre automação de processos para ' +
-        context +
-        '.'
+  return buildContactMessage(segment, serviceId)
+}
+export function normalizeWhatsAppPhone(phone: string | null): string | null {
+  if (!phone || !/^\+?[\d\s().-]+$/.test(phone.trim())) return null
+  const normalized = phone.replace(/\D/g, '')
+  if (!/^[1-9]\d{7,14}$/.test(normalized)) return null
+  if (normalized.startsWith('1') && !/^1[2-9]\d{2}[2-9]\d{6}$/.test(normalized))
+    return null
+  // Exige código internacional explícito; nunca adiciona 55.
+  if (normalized.startsWith('55')) {
+    const local = normalized.slice(2)
+    if (
+      !/^(?:1[1-9]|2[12478]|3[1-578]|4[1-9]|5[1345]|6[1-9]|7[134579]|8[1-9]|9[1-9])$/.test(
+        local.slice(0, 2),
+      ) ||
+      !/^\d{2}(?:[2-5]\d{7}|9\d{8})$/.test(local)
+    )
+      return null
+  }
+  return normalized
 }
 export function buildWhatsAppUrl(
   phone: string | null,
   message: string,
 ): string | null {
-  if (!phone || !/^\+?[\d\s().-]+$/.test(phone.trim())) return null
-  const normalized = phone.replace(/\D/g, '')
-  // Formato internacional E.164: código do país, sem prefixo 00 ou zero inicial.
-  if (!/^[1-9]\d{7,14}$/.test(normalized)) return null
+  const normalized = normalizeWhatsAppPhone(phone)
+  if (!normalized) return null
   return 'https://wa.me/' + normalized + '?text=' + encodeURIComponent(message)
 }

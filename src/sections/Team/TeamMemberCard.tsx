@@ -15,6 +15,8 @@ export function TeamMemberCard({
   const titleId = 'team-' + member.id + '-name'
   return (
     <article
+      data-reveal
+      data-reveal-delay={Math.min(300, (member.ordem - 1) * 90)}
       className="team-member"
       data-member={member.id}
       data-has-details={hasDetails}

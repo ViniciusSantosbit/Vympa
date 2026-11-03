@@ -16,19 +16,17 @@ test('mensagens contextualizadas e número de contato', () => {
       const message = buildServiceMessage(service, segment)
       assert.match(
         message,
-        service === 'servico-ia'
-          ? /sistema personalizado com IA/
-          : /automação de processos/,
+        service === 'servico-ia' ? /inteligência artificial/ : /automa[çt]/,
       )
       assert.match(
         message,
         segment === 'advocacia'
-          ? /escritório de advocacia/
+          ? /jurídico|advocacia/
           : segment === 'contabilidade'
             ? /escritório de contabilidade/
             : segment === 'imobiliarias'
-              ? /minha imobiliária/
-              : /minha empresa/,
+              ? /imobiliári[oa]/
+              : /serviço/,
       )
       assert.equal(buildWhatsAppUrl(null, message), null)
     }

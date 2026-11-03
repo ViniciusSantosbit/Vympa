@@ -21,6 +21,8 @@ export function PlanCard({
   const statusId = service.id + '-contact-status'
   return (
     <article
+      data-reveal
+      data-reveal-delay={service.id === 'servico-ia' ? 0 : 100}
       className="plan-card"
       data-service={service.id}
       aria-labelledby={titleId}

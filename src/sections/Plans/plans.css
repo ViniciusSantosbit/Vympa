@@ -246,10 +246,12 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .plan-card {
-    transition: none;
-  }
-  .plan-card:hover {
-    transform: none;
+  :root:not([data-motion='full']) {
+    .plan-card {
+      transition: none;
+    }
+    .plan-card:hover {
+      transform: none;
+    }
   }
 }

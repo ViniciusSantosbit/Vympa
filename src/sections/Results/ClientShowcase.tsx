@@ -33,13 +33,14 @@ export function ClientShowcase({
   if (available.length === 0) return null
   return (
     <section
+      data-reveal
       className="clients-section"
       hidden={!visible}
       aria-labelledby="clients-title"
     >
       <div className="clients-heading">
         <p className="clients-eyebrow">{clientsContent.eyebrow}</p>
-        <h2 id="clients-title" tabIndex={-1}>
+        <h2 data-reveal id="clients-title" tabIndex={-1}>
           {clientsContent.title}
         </h2>
         <p>{clientsContent.description}</p>

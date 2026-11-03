@@ -15,12 +15,12 @@ export function Plans(): ReactElement {
     >
       <div className="section-copy">
         <p className="section-eyebrow">{proposalsContent.eyebrow}</p>
-        <h2 id="planos-title" tabIndex={-1}>
+        <h2 data-reveal id="planos-title" tabIndex={-1}>
           {selectedSegment
             ? proposalsContent.titles[selectedSegment]
             : proposalsContent.title}
         </h2>
-        <p className="section-description">
+        <p data-reveal data-reveal-delay="90" className="section-description">
           {selectedSegment
             ? proposalsContent.descriptions[selectedSegment]
             : proposalsContent.description}

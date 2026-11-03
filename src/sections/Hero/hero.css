@@ -1,3 +1,10 @@
+@font-face {
+  font-family: 'Alegreya';
+  src: url('/fonts/alegreya/Alegreya-Variable.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+}
 .hero {
   position: relative;
   isolation: isolate;
@@ -89,15 +96,18 @@
   margin: 0 0 24px;
 }
 .hero h1 {
+  font-family: 'Alegreya', Georgia, serif;
   margin: 0;
   color: var(--color-primary);
-  font-weight: 550;
+  font-weight: 400;
   font-size: clamp(44px, 4.2vw, 64px);
   line-height: 1.08;
   letter-spacing: -0.045em;
   text-wrap: balance;
 }
 .hero h1 span {
+  font-family: sans-serif;
+  font-weight: 700;
   color: var(--color-hero-highlight);
 }
 .hero-description {
@@ -195,6 +205,7 @@
     padding-bottom: 32px;
   }
   .hero h1 {
+    font-family: 'Alegreya', Georgia, serif;
     font-size: 52px;
   }
   .hero-context {
@@ -218,6 +229,7 @@
     max-width: 520px;
   }
   .hero h1 {
+    font-family: 'Alegreya', Georgia, serif;
     font-size: clamp(44px, 6.7vw, 60px);
   }
   .hero-photo {
@@ -250,6 +262,7 @@
     margin-bottom: 22px;
   }
   .hero h1 {
+    font-family: 'Alegreya', Georgia, serif;
     font-size: clamp(38px, 10.5vw, 52px);
     line-height: 1.1;
     letter-spacing: -0.04em;
@@ -293,15 +306,17 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hero-focus,
-  .hero-context,
-  .hero-context-item {
-    transition: none;
-    transform: none;
+  :root:not([data-motion='full']) {
+    .hero-focus,
+    .hero-context,
+    .hero-context-item {
+      transition: none;
+      transform: none;
+    }
   }
 }
 
-/* A máscara preserva a nitidez do objeto ativo; textos e navegação ficam fora da camada. */
+/* A mÃƒÂ¡scara preserva a nitidez do objeto ativo; textos e navegaÃƒÂ§ÃƒÂ£o ficam fora da camada. */
 .hero-defocus {
   position: absolute;
   inset: 0;
@@ -339,7 +354,52 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hero-defocus {
-    transition: none;
+  :root:not([data-motion='full']) {
+    .hero-defocus {
+      transition: none;
+    }
+  }
+}
+
+/* Texto mais amplo; Contabilidade libera a fotografia Ã¯Â¿Â½ esquerda. */
+@media (min-width: 1100px) {
+  .hero-content {
+    max-width: 760px;
+    width: 58%;
+  }
+  .hero-description {
+    max-width: 650px;
+  }
+  .hero-context-message {
+    max-width: 600px;
+  }
+  .hero[data-segment='contabilidade'] .hero-shade {
+    background: linear-gradient(
+      270deg,
+      rgb(2 10 20 / 90%),
+      rgb(2 10 20 / 65%) 38%,
+      transparent 78%
+    );
+  }
+}
+@media (min-width: 600px) and (max-width: 1099px) {
+  .hero-content {
+    max-width: 680px;
+  }
+  .hero-description {
+    max-width: 600px;
+  }
+}
+
+/* Deslocamento real entre as duas posicoes, sincronizado com o borrao. */
+.hero-content {
+  position: relative;
+  left: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion='full']) {
+    .hero-content {
+      transition: none;
+    }
   }
 }

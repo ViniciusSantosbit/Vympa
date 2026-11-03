@@ -52,6 +52,7 @@ export interface TeamMember {
 }
 export interface Contacts {
   whatsapp: string | null
+  instagram: string | null
   email: string | null
   mensagemGeral: string | null
 }

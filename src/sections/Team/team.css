@@ -128,9 +128,11 @@ body:has(:focus-visible)
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .team-overlay,
-  .team-member-info {
-    transition: none;
-    transform: none;
+  :root:not([data-motion='full']) {
+    .team-overlay,
+    .team-member-info {
+      transition: none;
+      transform: none;
+    }
   }
 }

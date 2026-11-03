@@ -42,7 +42,7 @@ export function ComparisonChart({
       .map((p, i) => (i === 0 ? 'M' : 'L') + x(p.mes) + ',' + y(p[series]))
       .join(' ')
   return (
-    <figure className="comparison-figure">
+    <figure data-reveal className="comparison-figure">
       <figcaption className="chart-metric">
         {text.metric}
         <span>{text.figureNotice}</span>
@@ -192,6 +192,8 @@ export function ComparisonChart({
         />
         <p className="chart-help">{text.hint}</p>
         <dl
+          data-reveal
+          data-reveal-delay="90"
           className="chart-tooltip"
           aria-label={`Valores do mês ${point.mes}`}
         >

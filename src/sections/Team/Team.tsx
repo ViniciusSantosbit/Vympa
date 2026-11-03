@@ -20,7 +20,7 @@ export function Team({
       aria-labelledby="team-title"
     >
       <div className="team-container">
-        <h2 id="team-title" tabIndex={-1}>
+        <h2 data-reveal id="team-title" tabIndex={-1}>
           {teamContent.title}
         </h2>
         <div className="team-grid">
