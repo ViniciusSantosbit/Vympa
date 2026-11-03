@@ -209,7 +209,6 @@
 @media (hover: hover) {
   .plan-card:hover {
     border-color: var(--plan-accent);
-    transform: translateY(-3px);
   }
   .plan-cta[href]:hover {
     background: color-mix(in srgb, var(--plan-accent) 9%, transparent);
@@ -254,4 +253,25 @@
       transform: none;
     }
   }
+}
+
+/* Alinhamento central da apresentacao e dos cards de planos. */
+.proposals-section {
+  text-align: center;
+}
+.proposals-section .section-copy,
+.proposals-section .section-copy h2,
+.proposals-section .section-description,
+.proposals-section .plans-grid,
+.proposals-section .plans-notes {
+  margin-inline: auto;
+}
+.proposals-section .section-copy h2 {
+  font-family: sans-serif;
+  font-weight: 700;
+}
+.proposals-section .plan-identity,
+.proposals-section .plan-features li,
+.proposals-section .plan-cta {
+  justify-content: center;
 }
