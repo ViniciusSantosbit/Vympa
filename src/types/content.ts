@@ -44,6 +44,11 @@ export interface TeamMember {
   nome: string
   cargo: string
   fotoUrl: string | null
+  descricao: string
+  textoAlternativo: string
+  posicaoFoto: string
+  ordem: number
+  status: 'pendente' | 'publicado'
 }
 export interface Contacts {
   whatsapp: string | null

@@ -1,5 +1,7 @@
 @theme {
   --color-background: #060d18;
+  --color-team-background: #171b2d;
+  --color-team-placeholder: #f7f8fa;
   --color-surface: #101e32;
   --color-primary: #ffffff;
   --color-secondary: #bac7d8;

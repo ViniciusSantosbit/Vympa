@@ -1,6 +1,6 @@
 # VYMPA Landing
 
-S00 a S06 implementados e validados localmente. S07 a S13 não iniciados. Premissas S06 pendentes de aprovação para publicação. Projeto criado diretamente na pasta Vympa, inicialmente vazia, pelo template oficial React/TypeScript do Vite.
+S00 a S07 implementados e validados localmente. S08 a S13 não iniciados. Premissas S06 pendentes de aprovação para publicação. Projeto criado diretamente na pasta Vympa, inicialmente vazia, pelo template oficial React/TypeScript do Vite.
 
 ## Ambiente e instalação
 
@@ -244,3 +244,41 @@ Removidos da interface: custos em reais, investimento, manutenção, ponto de eq
 GrowthComparison e lib/growthComparison.ts substituem os componentes e cálculos financeiros da implementação anterior. Dados em src/content/simulacao.ts e tipo GrowthSimulation. As séries compartilham mês zero e base 100; diferenças são pontos de índice (IA menos cenário sem IA). Testes atualizados para séries válidas, índices finitos e consistência entre gráfico/tabela nos quatro contextos.
 
 Validação da revisão: 21 testes aprovados; typecheck, lint, format:check e build. Navegador em 1440×900 e 390×844: sem overflow horizontal ou novos erros no console; zero blocos de premissas, sem reais no módulo, duas linhas e tabela de 13 meses. Sem publicação ou início do S07.
+
+## S07 — Nosso Time: quatro sócios
+
+A correção explícita do usuário substitui todas as referências a três sócios no roteiro: são quatro cards. Integrados depois de Resultados, preservando Como funciona na posição existente, sem mudanças em navbar, hero, propostas, carrossel ou gráfico. A seção usa id nosso-time e o título exato Nosso Time:.
+
+### Estrutura e arquivos
+
+Criados src/sections/Team/Team.tsx, TeamMemberCard.tsx e team.css; src/lib/team.ts; public/images/equipe/.gitkeep; tests/team.test.mjs, team-harness.html e team-harness.tsx. Alterados src/app/App.tsx, src/content/equipe.ts, src/types/content.ts, src/styles/tokens.css e README.md. Removido apenas o .gitkeep da pasta Team implementada. Nenhuma dependência nova; AGENTS.md preservado.
+
+Team gera os cards a partir dos dados, sem HTML duplicado. TeamMemberCard cuida da imagem opcional, object-fit cover, object-position individual, overlay, informações e fallback para área vazia se a imagem falhar. Cards informativos não são botões, links nem recebem tabindex. Textos continuam no DOM acessível mesmo fora do hover; navegação por teclado com foco visível revela informações, e telas pequenas ou dispositivos sem hover mostram os dados cadastrados permanentemente.
+
+### Visual e animação
+
+Fundo #171B2D, título centralizado, gap de 50px até os cards, espaçamento de 20px e cantos retos. Container desktop ampliado para 1320px para acomodar os quatro retratos de aproximadamente 315×400px, mantendo a proporção da referência textual. Abaixo de 1100px: duas colunas, limitadas a 650px. Abaixo de 600px: uma coluna com largura máxima de 315px. Aspect-ratio mantém proporções sem alturas fixas.
+
+Áreas sem foto usam fundo neutro quase branco, sem imagem fictícia, ícone, emoji, nome/cargo inventado ou URL inexistente. Hover individual de 280ms em opacity/transform, com gradiente sutil escuro esverdeado e nome/cargo/descrição centralizados na base. Sair desfaz o efeito sem deslocar nenhum card. prefers-reduced-motion remove as transições. Não há brilho, zoom, carrossel ou 3D.
+
+### Como cadastrar os quatro perfis oficiais
+
+Os registros socio-01, socio-02, socio-03 e socio-04 estão em src/content/equipe.ts, com nome, cargo e descricao vazios; fotoUrl null; textoAlternativo vazio; ordem 1–4 e status pendente. Não há integrantes fictícios. Copiar as fotografias oficiais para public/images/equipe/ e preencher fotoUrl com /images/equipe/nome-do-arquivo.webp (ou jpg/jpeg/png/avif). Preencher nome, cargo, descricao profissional curta e textoAlternativo; ajustar posicaoFoto para enquadrar o rosto se necessário.
+
+Somente após validar os dados e fotografias, mudar status para publicado. A prévia npm run dev inclui os quatro rascunhos em branco. O build de produção não exibe perfis pendentes ou sem nome, cargo, foto local válida e texto alternativo. O status não substitui a validação real. No estado atual a seção definitiva não é publicada, conforme o roteiro. A estrutura permite adicionar integrantes e ordenar registros sem modificar o layout dos componentes.
+
+### Validação S07
+
+npm run test: 23 testes aprovados. Novos testes cobrem quatro áreas sem img/h3 fictício, estado de produção sem rascunhos, dados opcionais, fotografia/enquadramento configuráveis, ordenação, duplicados e bloqueio de perfis incompletos. npm run typecheck, npm run lint, npm run format:check e npm run build aprovados.
+
+Navegador: 1600×900 e 1440×900 com quatro colunas; 768×1024 com duas colunas; 390×844 com uma coluna. Sem overflow horizontal ou novos erros no console, nenhuma imagem solicitada nos quatro slots vazios. Com fixtures exclusivamente no harness de testes, primeiro card apresentou overlay/texto com opacidade 1 e os demais 0, mantendo todos os retângulos exatamente iguais. Alternância rápida entre os quatro cards manteve apenas o último ativo; retirar o ponteiro devolveu todas as opacidades a 0. Teclado revelou os dados via foco visível; no mobile os textos permanecem visíveis, sem controles artificiais ou dependência de hover.
+
+Harness: http://127.0.0.1:5173/tests/team-harness.html enquanto npm run dev estiver ativo. Contém somente nomes/cargos explicitamente sintéticos de teste, sem fotografias. Esse HTML e suas fixtures não entram no build normal. A página principal continua com os quatro espaços e campos profissionais em branco.
+
+Regressão: seleção Contabilidade ainda navega para planos; dois cards, um gráfico, quatro slots de equipe; ordem inicio, planos, como-funciona, resultados, nosso-time; zero âncoras quebradas. Regras CSS de movimento reduzido conferidas, sem emulação real dessa preferência no navegador. Não foi testado toque em aparelho físico; os cards não precisam de toque para revelar informações no mobile.
+
+### Referência, pendências e handoff S08
+
+Só foi recebido Texto colado.txt, sem vídeo ou captura específica da seção. Não há vídeo no workspace, portanto não foi possível comparar frames nem afirmar fidelidade visual absoluta. A implementação segue as especificações textuais, adaptadas aos quatro sócios. Pendentes: quatro fotografias oficiais e nomes, cargos, descrições e textos alternativos aprovados. Publicação final depende desses dados.
+
+S08 deve preservar id nosso-time, quatro posições, ordenação/publicação dos perfis, proporção e hover, além dos módulos anteriores. Não foram implementados botões flutuantes, redes sociais, rodapé definitivo ou funcionalidades do S08. Sem commit, push ou deploy nesta etapa.

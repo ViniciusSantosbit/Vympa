@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { cancelSectionNavigation } from '@/lib/sectionNavigation'
+import { Team } from '@/sections/Team/Team'
 import { Results } from '@/sections/Results/Results'
 import { Plans } from '@/sections/Plans/Plans'
 import { HowItWorks } from '@/sections/Plans/HowItWorks'
@@ -17,6 +18,7 @@ export default function App(): ReactElement {
         <Plans />
         <HowItWorks />
         <Results onAvailabilityChange={setResultsAvailable} />
+        <Team />
       </main>
     </>
   )
