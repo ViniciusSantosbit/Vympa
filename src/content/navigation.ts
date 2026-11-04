@@ -20,24 +20,29 @@ export const proposalsContent = {
 }
 export const howItWorksContent = {
   eyebrow: 'COMO FUNCIONA',
-  title: 'Da sua rotina à solução sob medida',
+  title: 'Da sua operação à solução sob medida.',
+  titles: {
+    advocacia: 'Da rotina jurídica à solução sob medida.',
+    contabilidade: 'Da rotina contábil à solução sob medida.',
+    imobiliarias: 'Da operação imobiliária à solução sob medida.',
+  } satisfies Record<SegmentId, string>,
   introduction:
-    'Nossa abordagem parte do entendimento da operação para definir uma solução personalizada. O desenvolvimento e a integração seguem o escopo contratado.',
+    'Entendemos os desafios da sua operação, planejamos a solução e desenvolvemos tecnologias adaptadas às necessidades do seu negócio.',
   steps: [
     {
-      title: 'Entender a operação',
+      title: 'Diagnóstico',
       description:
-        'Conhecer os processos, os sistemas utilizados e as necessidades do escritório.',
+        'Conhecemos os sistemas, processos e desafios da sua operação para identificar oportunidades de melhoria.',
     },
     {
-      title: 'Definir a solução',
+      title: 'Planejamento',
       description:
-        'Estabelecer as personalizações, os recursos de IA e as automações adequadas ao contexto.',
+        'Definimos a solução personalizada, as funcionalidades, os recursos de IA e as automações adequadas ao negócio.',
     },
     {
-      title: 'Desenvolver e integrar',
+      title: 'Implementação',
       description:
-        'Construir e integrar a solução conforme o escopo acordado com o cliente.',
+        'Desenvolvemos, personalizamos e integramos a solução conforme o escopo definido com o cliente.',
     },
   ],
 }

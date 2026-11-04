@@ -119,3 +119,45 @@ test('mudança para movimento reduzido interrompe efeitos em curso', (t) => {
   assert.equal(h.counts().canceled, 1)
   cleanup()
 })
+
+test('timeline usa o observer existente, revela uma vez e acompanha o último card', (t) => {
+  const h = setup(t)
+  h.node.dataset = { revealGroup: 'process' }
+  h.node.closest = () => ({})
+  const parts = [0, 100, 200].map((delay) => ({
+    ...h.node,
+    dataset: { revealDelay: String(delay) },
+  }))
+  const line = { ...h.node, dataset: { revealLine: '', revealDelay: '100' } }
+  h.node.querySelectorAll = () => [...parts, line]
+  const cleanup = initializeScrollReveal(h.root)
+  h.emit()
+  h.emit()
+  assert.equal(h.played.length, 4)
+  assert.deepEqual(
+    h.played.slice(0, 3).map((x) => x.options.delay),
+    [0, 100, 200],
+  )
+  const lastCard = h.played[2].options
+  const progress = h.played[3]
+  assert.equal(
+    progress.options.delay + progress.options.duration,
+    lastCard.delay + lastCard.duration,
+  )
+  assert.equal(progress.keyframes[1].scale, '1 1')
+  cleanup()
+  assert.equal(h.counts().canceled, 4)
+})
+
+test('seção de processo respeita o sistema mesmo com movimento global completo', (t) => {
+  const h = setup(t)
+  motionSettings.mode = 'full'
+  h.node.closest = () => ({})
+  const system = Object.assign(new EventTarget(), { matches: true })
+  globalThis.window.matchMedia = (query) =>
+    query.includes('prefers-reduced-motion') ? system : h.media
+  const cleanup = initializeScrollReveal(h.root)
+  h.emit()
+  assert.equal(h.played.length, 0)
+  cleanup()
+})

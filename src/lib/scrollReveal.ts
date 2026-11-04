@@ -3,6 +3,10 @@ export function initializeScrollReveal(root: HTMLElement): () => void {
   if (typeof IntersectionObserver === 'undefined') return () => {}
   const preference = getMotionPreference()
   if (preference.matches) return () => {}
+  const processPreference = window.matchMedia(
+    '(prefers-reduced-motion: reduce)',
+  )
+  const processNodes = new WeakSet<HTMLElement>()
   const seen = new WeakSet<Element>()
   const animations = new Map<HTMLElement, Animation>()
   let observer: IntersectionObserver | undefined
@@ -17,19 +21,37 @@ export function initializeScrollReveal(root: HTMLElement): () => void {
     observer?.unobserve(node)
     if (seen.has(node)) return
     seen.add(node)
-    if (preference.matches || node.contains(document.activeElement)) return
+    const isProcess = Boolean(node.closest?.('#como-funciona'))
+    if (isProcess) processNodes.add(node)
+    if (
+      preference.matches ||
+      (isProcess && processPreference.matches) ||
+      node.contains(document.activeElement)
+    )
+      return
+    if (node.dataset.revealGroup === 'process') {
+      for (const part of node.querySelectorAll<HTMLElement>(
+        '[data-reveal-part]',
+      ))
+        reveal(part)
+      return
+    }
     try {
       const delay = Math.min(
         300,
         Math.max(0, Number(node.dataset.revealDelay) || 0),
       )
+      const isLine = node.dataset.revealLine !== undefined
+      const vertical = window.matchMedia('(max-width: 899px)').matches
       const animation = node.animate(
-        [
-          { opacity: 0, translate: '0 24px' },
-          { opacity: 1, translate: '0 0' },
-        ],
+        isLine
+          ? [{ scale: vertical ? '1 0' : '0 1' }, { scale: '1 1' }]
+          : [
+              { opacity: 0, translate: '0 24px' },
+              { opacity: 1, translate: '0 0' },
+            ],
         {
-          duration: 700,
+          duration: isLine ? 700 : isProcess ? 600 : 700,
           delay,
           easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
           fill: 'backwards',
@@ -48,6 +70,15 @@ export function initializeScrollReveal(root: HTMLElement): () => void {
   const focus = (event: FocusEvent) => {
     for (const [node, animation] of animations) {
       if (event.target instanceof Node && node.contains(event.target)) {
+        animation.cancel()
+        animations.delete(node)
+      }
+    }
+  }
+  const processChange = () => {
+    if (!processPreference.matches) return
+    for (const [node, animation] of animations) {
+      if (processNodes.has(node)) {
         animation.cancel()
         animations.delete(node)
       }
@@ -74,6 +105,7 @@ export function initializeScrollReveal(root: HTMLElement): () => void {
     mutations.observe(root, { childList: true, subtree: true })
     root.addEventListener('focusin', focus)
     preference.addEventListener('change', change)
+    processPreference.addEventListener('change', processChange)
   } catch {
     finish()
   }
@@ -81,5 +113,6 @@ export function initializeScrollReveal(root: HTMLElement): () => void {
     finish()
     root.removeEventListener('focusin', focus)
     preference.removeEventListener('change', change)
+    processPreference.removeEventListener('change', processChange)
   }
 }

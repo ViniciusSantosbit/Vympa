@@ -1,0 +1,227 @@
+@property --process-border-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes process-border-travel {
+  to {
+    --process-border-angle: 360deg;
+  }
+}
+
+.how-section .process-container {
+  max-width: 1200px;
+  margin-inline: auto;
+}
+.how-section .section-copy {
+  margin-inline: auto;
+  text-align: center;
+}
+.how-section .section-copy h2,
+.how-section .section-description {
+  margin-inline: auto;
+}
+.process-timeline {
+  position: relative;
+  margin-top: 52px;
+}
+.process-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.process-track {
+  position: absolute;
+  top: 7px;
+  left: calc((100% - 48px) / 6);
+  right: calc((100% - 48px) / 6);
+  height: 1px;
+  background: var(--color-border);
+}
+.process-progress {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--color-highlight);
+  transform-origin: top left;
+}
+.process-step {
+  position: relative;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding-top: 38px;
+}
+.process-marker {
+  position: absolute;
+  top: 2px;
+  left: calc(50% - 5px);
+  width: 11px;
+  height: 11px;
+  border: 2px solid var(--color-highlight);
+  border-radius: 50%;
+  background: var(--color-background);
+}
+.process-card {
+  position: relative;
+  isolation: isolate;
+  flex: 1;
+  padding: 30px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  transition:
+    transform 240ms ease,
+    border-color 240ms ease,
+    box-shadow 320ms ease-out,
+    background-color 320ms ease-out;
+}
+.process-card-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+.process-icon {
+  color: var(--color-highlight);
+  transition: color 240ms ease;
+}
+.process-number {
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: var(--color-secondary);
+  font-variant-numeric: tabular-nums;
+}
+.process-card h3 {
+  color: var(--color-primary);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 0 0 16px;
+  overflow-wrap: anywhere;
+}
+.process-card p {
+  color: var(--color-secondary);
+  font-size: 15px;
+  line-height: 1.8;
+  margin: 0;
+}
+@media (hover: hover) and (pointer: fine) {
+  .process-card[data-pointer-glow] {
+    transform: translateY(-4px);
+    background-color: color-mix(in srgb, var(--color-surface) 94%, white);
+    transition-duration: 240ms;
+    box-shadow: 0 12px 24px rgb(0 0 0 / 16%);
+  }
+  .process-card[data-pointer-glow] .process-icon {
+    color: var(--color-accent);
+  }
+}
+@media (max-width: 899px) {
+  .process-steps {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .process-track {
+    top: 31px;
+    bottom: 31px;
+    left: 7px;
+    right: auto;
+    width: 1px;
+    height: auto;
+  }
+  .process-step {
+    padding-top: 0;
+    padding-left: 36px;
+  }
+  .process-marker {
+    top: 30px;
+    left: 2px;
+  }
+  .process-card {
+    padding: 26px;
+  }
+  .process-card-heading {
+    margin-bottom: 22px;
+  }
+}
+@media (max-width: 599px) {
+  .process-timeline {
+    margin-top: 36px;
+  }
+  .process-card {
+    padding: 24px 20px;
+  }
+  .process-card h3 {
+    font-size: 20px;
+  }
+  .process-card p {
+    font-size: 14px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .process-card,
+  .process-icon {
+    transition: none;
+  }
+  .process-card:hover {
+    transform: none;
+  }
+}
+
+/* The masked layer paints only the contour, never text or hit targets. */
+@supports (mask-composite: exclude) or (-webkit-mask-composite: xor) {
+  .process-card::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    padding: 1px;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    background:
+      conic-gradient(
+        from var(--process-border-angle),
+        transparent 0deg 210deg,
+        rgb(104 221 168 / 20%) 250deg,
+        var(--color-accent) 285deg,
+        var(--color-highlight) 310deg,
+        transparent 350deg
+      ),
+      radial-gradient(
+        380px circle at var(--pointer-x, 50%) var(--pointer-y, 50%),
+        var(--color-highlight),
+        rgb(127 251 253 / 55%) 35%,
+        transparent 85%
+      );
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    transition: opacity 320ms ease-out;
+  }
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .process-card[data-pointer-glow]::before {
+      opacity: 0.85;
+      transition-duration: 240ms;
+      animation: process-border-travel 3.6s linear infinite;
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .process-card[data-pointer-glow] {
+    transform: none;
+    background: var(--color-surface);
+  }
+  .process-card::before {
+    display: none;
+    transition: none;
+  }
+}
