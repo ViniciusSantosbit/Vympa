@@ -21,6 +21,8 @@ export interface Service {
   segmentos: Readonly<Record<SegmentId, ServiceVariant>>
 }
 export interface Client {
+  especialidade?: string | null
+  experiencia?: string | null
   id: string
   nome: string
   logoUrl: string | null

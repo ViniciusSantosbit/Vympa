@@ -120,3 +120,154 @@
   font-weight: 600;
   margin: 0 0 20px;
 }
+
+/* Logo-only coverflow: the current company leads; adjacent companies recede. */
+#resultados .clients-section .client-carousel {
+  max-width: 1080px;
+  margin: 40px auto 0;
+}
+#resultados .clients-section .clients-viewport {
+  overflow: clip;
+  padding: 16px 0;
+  perspective: 1100px;
+  touch-action: pan-y;
+}
+#resultados .clients-section .clients-track {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 300px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+#resultados .clients-section .client-logo {
+  --client-step: 218px;
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  width: 380px;
+  height: 250px;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  background: linear-gradient(145deg, #152337, #0d1828);
+  transform: translateX(calc(-50% + var(--client-offset) * var(--client-step)))
+    translateY(calc(var(--client-depth) * 22px)) scale(var(--client-scale))
+    rotateY(var(--client-rotation));
+  opacity: 1;
+  overflow: hidden;
+  transition:
+    transform 550ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 450ms ease;
+}
+#resultados .clients-section .client-logo[data-depth='1'] {
+  opacity: 0.62;
+}
+#resultados .clients-section .client-logo[data-depth='2'] {
+  opacity: 0.3;
+}
+#resultados .clients-section .client-logo[data-depth='3'] {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+#resultados .clients-section .client-brand-stage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 30px;
+  border: 0;
+  background: transparent;
+  border-radius: inherit;
+}
+#resultados .clients-section button.client-brand-stage {
+  cursor: pointer;
+}
+#resultados .clients-section .client-logo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 100%;
+  aspect-ratio: 714 / 324;
+  object-fit: contain;
+}
+#resultados .clients-section .client-brand-stage:focus-visible {
+  outline-offset: -5px;
+}
+.clients-position {
+  text-align: center;
+  color: var(--color-primary);
+  margin: 12px 0 24px;
+  font-variant-numeric: tabular-nums;
+}
+.clients-position > span {
+  font-size: 34px;
+  font-weight: 600;
+}
+.clients-position small {
+  font-size: 12px;
+  color: var(--color-secondary);
+}
+#resultados .clients-section .clients-controls {
+  align-items: center;
+  gap: 12px;
+  margin-top: 0;
+}
+#resultados .clients-section .clients-controls > button {
+  border-radius: 50%;
+  font-size: 26px;
+}
+.clients-pagination {
+  display: flex;
+  flex-wrap: nowrap;
+  max-width: min(288px, calc(100vw - 180px));
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+#resultados .clients-section .clients-pagination button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  flex-shrink: 0;
+  height: 44px;
+  border: 0;
+  background: transparent;
+}
+.clients-pagination button span {
+  width: 5px;
+  height: 5px;
+  border-radius: 8px;
+  background: var(--color-secondary);
+  opacity: 0.4;
+  transition:
+    width 250ms ease,
+    opacity 250ms ease;
+}
+.clients-pagination button[aria-current='true'] span {
+  width: 18px;
+  opacity: 1;
+  background: var(--color-highlight);
+}
+@media (max-width: 599px) {
+  #resultados .clients-section .client-logo {
+    --client-step: 150px;
+    width: min(290px, calc(100vw - 64px));
+    height: 210px;
+  }
+  #resultados .clients-section .clients-track {
+    height: 260px;
+  }
+  #resultados .clients-section .client-brand-stage {
+    padding: 24px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  #resultados .clients-section .client-logo,
+  .clients-pagination button span {
+    transition: none;
+  }
+}

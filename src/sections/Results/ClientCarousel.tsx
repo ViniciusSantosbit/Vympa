@@ -1,9 +1,8 @@
-import { getMotionPreference } from '@/lib/motionPreference'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import type { ReactElement } from 'react'
 import type { Client } from '@/types/content'
 import { clientsContent } from '@/content/clientes'
-import { clientLogoKey, getCarouselBounds } from '@/lib/clients'
+import { clientLogoKey } from '@/lib/clients'
 import { ClientLogo } from './ClientLogo'
 export function ClientCarousel({
   clients,
@@ -14,96 +13,69 @@ export function ClientCarousel({
   onLoad: (key: string) => void
   onError: (key: string) => void
 }): ReactElement {
-  const viewportRef = useRef<HTMLDivElement>(null)
-  const trackRef = useRef<HTMLUListElement>(null)
-  const drag = useRef<{ x: number; left: number } | null>(null)
-  const [bounds, setBounds] = useState({
-    overflow: false,
-    atStart: true,
-    atEnd: true,
-  })
-  useEffect(() => {
-    const viewport = viewportRef.current,
-      track = trackRef.current
-    if (!viewport || !track) return
-    const measure = (): void => {
-      const next = getCarouselBounds(
-        viewport.scrollWidth,
-        viewport.clientWidth,
-        viewport.scrollLeft,
-      )
-      setBounds((previous) =>
-        previous.overflow === next.overflow &&
-        previous.atStart === next.atStart &&
-        previous.atEnd === next.atEnd
-          ? previous
-          : next,
-      )
-    }
-    const observer = new ResizeObserver(measure)
-    observer.observe(viewport)
-    observer.observe(track)
-    viewport.addEventListener('scroll', measure, { passive: true })
-    return () => {
-      observer.disconnect()
-      viewport.removeEventListener('scroll', measure)
-    }
-  }, [])
-  const move = (direction: -1 | 1, edge = false): void => {
-    const viewport = viewportRef.current
-    if (!viewport) return
-    const behavior = getMotionPreference().matches ? 'instant' : 'smooth'
-    if (edge)
-      viewport.scrollTo({
-        left: direction === -1 ? 0 : viewport.scrollWidth,
-        behavior,
-      })
-    else
-      viewport.scrollBy({
-        left: direction * viewport.clientWidth * 0.8,
-        behavior,
-      })
+  const [selectedKey, setSelectedKey] = useState<string | null>(null)
+  const drag = useRef<{ x: number; y: number } | null>(null)
+  const dragged = useRef(false)
+  const active = Math.max(
+    0,
+    clients.findIndex((client) => clientLogoKey(client) === selectedKey),
+  )
+  const multiple = clients.length > 1
+  const select = (index: number) => {
+    const client = clients[(index + clients.length) % clients.length]
+    if (client) setSelectedKey(clientLogoKey(client))
   }
+  const move = (direction: -1 | 1) => select(active + direction)
   return (
-    <div className="client-carousel">
+    <div className="client-carousel" data-single={!multiple}>
       <div
-        ref={viewportRef}
         className="clients-viewport"
         role="region"
         aria-label={clientsContent.carouselLabel}
-        aria-roledescription={bounds.overflow ? 'carrossel' : undefined}
-        tabIndex={bounds.overflow ? 0 : -1}
-        data-overflow={bounds.overflow}
+        aria-roledescription={multiple ? 'carrossel' : undefined}
+        tabIndex={multiple ? 0 : -1}
         onKeyDown={(event) => {
-          if (!bounds.overflow) return
+          if (!multiple) return
           if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) {
             event.preventDefault()
-            move(
-              event.key === 'ArrowLeft' || event.key === 'Home' ? -1 : 1,
-              event.key === 'Home' || event.key === 'End',
-            )
+            if (event.key === 'Home') select(0)
+            else if (event.key === 'End') select(clients.length - 1)
+            else move(event.key === 'ArrowLeft' ? -1 : 1)
           }
         }}
         onPointerDown={(event) => {
-          if (
-            event.pointerType !== 'mouse' ||
-            !bounds.overflow ||
-            event.button !== 0
-          )
-            return
-          drag.current = {
-            x: event.clientX,
-            left: event.currentTarget.scrollLeft,
-          }
-          event.currentTarget.setPointerCapture(event.pointerId)
+          if (!multiple || event.button !== 0) return
+          dragged.current = false
+          drag.current = { x: event.clientX, y: event.clientY }
         }}
         onPointerMove={(event) => {
-          if (drag.current)
-            event.currentTarget.scrollLeft =
-              drag.current.left - (event.clientX - drag.current.x)
+          const start = drag.current
+          if (
+            start &&
+            Math.abs(event.clientX - start.x) > 10 &&
+            Math.abs(event.clientX - start.x) >
+              Math.abs(event.clientY - start.y)
+          ) {
+            event.currentTarget.setPointerCapture(event.pointerId)
+          }
         }}
-        onPointerUp={() => {
+        onPointerUp={(event) => {
+          const start = drag.current
           drag.current = null
+          if (!start) return
+          const dx = event.clientX - start.x,
+            dy = event.clientY - start.y
+          if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+            dragged.current = true
+            move(dx < 0 ? 1 : -1)
+          }
+        }}
+        onClickCapture={(event) => {
+          if (dragged.current) {
+            event.preventDefault()
+            event.stopPropagation()
+            dragged.current = false
+          }
         }}
         onPointerCancel={() => {
           drag.current = null
@@ -112,37 +84,66 @@ export function ClientCarousel({
           drag.current = null
         }}
       >
-        <ul ref={trackRef} className="clients-track">
-          {clients.map((client, index) => (
-            <ClientLogo
-              key={clientLogoKey(client)}
-              client={client}
-              priority={index === 0}
-              onLoad={() => onLoad(clientLogoKey(client))}
-              onError={() => onError(clientLogoKey(client))}
-            />
-          ))}
+        <ul className="clients-track" role="list">
+          {clients.map((client, index) => {
+            let offset = (index - active + clients.length) % clients.length
+            if (offset > clients.length / 2) offset -= clients.length
+            return (
+              <ClientLogo
+                key={clientLogoKey(client)}
+                client={client}
+                priority={index === 0}
+                offset={offset}
+                multiple={multiple}
+                onSelect={() => select(index)}
+                onLoad={() => onLoad(clientLogoKey(client))}
+                onError={() => onError(clientLogoKey(client))}
+              />
+            )
+          })}
         </ul>
       </div>
-      {bounds.overflow && (
-        <div className="clients-controls">
-          <button
-            type="button"
-            aria-label={clientsContent.previous}
-            disabled={bounds.atStart}
-            onClick={() => move(-1)}
+      {multiple && (
+        <>
+          <p
+            className="clients-position"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
           >
-            <span aria-hidden="true">←</span>
-          </button>
-          <button
-            type="button"
-            aria-label={clientsContent.next}
-            disabled={bounds.atEnd}
-            onClick={() => move(1)}
-          >
-            <span aria-hidden="true">→</span>
-          </button>
-        </div>
+            <span>{String(active + 1).padStart(2, '0')}</span>
+            <small> / {String(clients.length).padStart(2, '0')}</small>
+          </p>
+          <div className="clients-controls">
+            <button
+              type="button"
+              aria-label={clientsContent.previous}
+              onClick={() => move(-1)}
+            >
+              <span aria-hidden="true">‹</span>
+            </button>
+            <div className="clients-pagination">
+              {clients.map((client, index) => (
+                <button
+                  key={client.id}
+                  type="button"
+                  aria-label={`Mostrar logo de ${client.nome}`}
+                  aria-current={index === active ? 'true' : undefined}
+                  onClick={() => select(index)}
+                >
+                  <span aria-hidden="true" />
+                </button>
+              ))}
+            </div>
+            <button
+              type="button"
+              aria-label={clientsContent.next}
+              onClick={() => move(1)}
+            >
+              <span aria-hidden="true">›</span>
+            </button>
+          </div>
+        </>
       )}
     </div>
   )

@@ -83,7 +83,15 @@ test('estado vazio, autorização e marcas aguardando imagem válida', async () 
     const { ClientShowcase: Results } = await server.ssrLoadModule(
       '/src/sections/Results/ClientShowcase.tsx',
     )
-    assert.equal(renderToStaticMarkup(createElement(Results)), '')
+    const realClient = renderToStaticMarkup(createElement(Results))
+    assert.match(realClient, /Montezuma &amp; Conde/)
+    assert.doesNotMatch(realClient, /Especialidade|Experiência|CLIENTE VYMPA/)
+    assert.match(realClient, /src="\/images\/clientes\/montezuma-conde.png"/)
+    assert.doesNotMatch(realClient, /aria-label="Próximos clientes"/)
+    assert.equal(
+      renderToStaticMarkup(createElement(Results, { clients: [] })),
+      '',
+    )
     assert.equal(
       renderToStaticMarkup(
         createElement(Results, {
