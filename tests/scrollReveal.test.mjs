@@ -4,6 +4,7 @@ import assert from 'node:assert/strict'
 import { initializeScrollReveal } from '../src/lib/scrollReveal.ts'
 
 function setup(t, { reduced = false, fail = false } = {}) {
+  const originalMode = motionSettings.mode
   motionSettings.mode = 'system'
   const keys = [
     'window',
@@ -61,6 +62,7 @@ function setup(t, { reduced = false, fail = false } = {}) {
   const root = new EventTarget()
   root.querySelectorAll = () => [node]
   t.after(() => {
+    motionSettings.mode = originalMode
     for (const [key, descriptor] of originals) {
       if (descriptor) Object.defineProperty(globalThis, key, descriptor)
       else delete globalThis[key]
@@ -149,7 +151,7 @@ test('timeline usa o observer existente, revela uma vez e acompanha o último ca
   assert.equal(h.counts().canceled, 4)
 })
 
-test('seção de processo respeita o sistema mesmo com movimento global completo', (t) => {
+test('seção de processo anima com movimento completo mesmo com sistema reduzido', (t) => {
   const h = setup(t)
   motionSettings.mode = 'full'
   h.node.closest = () => ({})
@@ -158,6 +160,7 @@ test('seção de processo respeita o sistema mesmo com movimento global completo
     query.includes('prefers-reduced-motion') ? system : h.media
   const cleanup = initializeScrollReveal(h.root)
   h.emit()
-  assert.equal(h.played.length, 0)
+  assert.equal(h.played.length, 1)
+  assert.equal(h.played[0].options.duration, 600)
   cleanup()
 })

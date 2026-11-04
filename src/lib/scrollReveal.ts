@@ -3,10 +3,6 @@ export function initializeScrollReveal(root: HTMLElement): () => void {
   if (typeof IntersectionObserver === 'undefined') return () => {}
   const preference = getMotionPreference()
   if (preference.matches) return () => {}
-  const processPreference = window.matchMedia(
-    '(prefers-reduced-motion: reduce)',
-  )
-  const processNodes = new WeakSet<HTMLElement>()
   const seen = new WeakSet<Element>()
   const animations = new Map<HTMLElement, Animation>()
   let observer: IntersectionObserver | undefined
@@ -22,13 +18,7 @@ export function initializeScrollReveal(root: HTMLElement): () => void {
     if (seen.has(node)) return
     seen.add(node)
     const isProcess = Boolean(node.closest?.('#como-funciona'))
-    if (isProcess) processNodes.add(node)
-    if (
-      preference.matches ||
-      (isProcess && processPreference.matches) ||
-      node.contains(document.activeElement)
-    )
-      return
+    if (preference.matches || node.contains(document.activeElement)) return
     if (node.dataset.revealGroup === 'process') {
       for (const part of node.querySelectorAll<HTMLElement>(
         '[data-reveal-part]',
@@ -75,15 +65,6 @@ export function initializeScrollReveal(root: HTMLElement): () => void {
       }
     }
   }
-  const processChange = () => {
-    if (!processPreference.matches) return
-    for (const [node, animation] of animations) {
-      if (processNodes.has(node)) {
-        animation.cancel()
-        animations.delete(node)
-      }
-    }
-  }
   const change = () => {
     if (preference.matches) finish()
   }
@@ -105,7 +86,6 @@ export function initializeScrollReveal(root: HTMLElement): () => void {
     mutations.observe(root, { childList: true, subtree: true })
     root.addEventListener('focusin', focus)
     preference.addEventListener('change', change)
-    processPreference.addEventListener('change', processChange)
   } catch {
     finish()
   }
@@ -113,6 +93,5 @@ export function initializeScrollReveal(root: HTMLElement): () => void {
     finish()
     root.removeEventListener('focusin', focus)
     preference.removeEventListener('change', change)
-    processPreference.removeEventListener('change', processChange)
   }
 }

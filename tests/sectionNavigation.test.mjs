@@ -8,6 +8,7 @@ import {
 } from '../src/lib/sectionNavigation.ts'
 
 function harness(t, reduced = false, desktop = false) {
+  const originalMode = motionSettings.mode
   motionSettings.mode = 'system'
   t.mock.timers.enable({ apis: ['setTimeout'] })
   const keys = [
@@ -34,7 +35,9 @@ function harness(t, reduced = false, desktop = false) {
     innerHeight: 900,
     matchMedia: (query) =>
       Object.assign(new EventTarget(), {
-        matches: query.includes('pointer: fine') ? desktop : reduced,
+        matches: query.includes('pointer: fine')
+          ? desktop
+          : query === '(prefers-reduced-motion: reduce)' && reduced,
       }),
     scrollTo: (options) => {
       calls.push(options.top)
@@ -82,6 +85,7 @@ function harness(t, reduced = false, desktop = false) {
   }
   t.after(() => {
     cancelSectionNavigation()
+    motionSettings.mode = originalMode
     for (const [key, descriptor] of originals) {
       if (descriptor) Object.defineProperty(globalThis, key, descriptor)
       else delete globalThis[key]
@@ -106,6 +110,23 @@ test('seleção espera 800ms e percorre posições intermediárias com offset re
   assert.ok(h.calls.every((y, i) => i === 0 || y >= h.calls[i - 1]))
   assert.deepEqual(h.focus, [{ preventScroll: true }])
   assert.equal(h.frames.size, 0)
+})
+
+test('movimento completo preserva espera e rolagem com sistema reduzido', async (t) => {
+  const h = harness(t, true)
+  motionSettings.mode = 'full'
+  const nav = navigateToSection('planos', true)
+  await h.render()
+  t.mock.timers.tick(799)
+  await h.step()
+  assert.equal(h.calls.length, 0)
+  t.mock.timers.tick(1)
+  await h.step()
+  await h.complete()
+  await nav
+  assert.ok(h.calls.some((y) => y > 0 && y < 900))
+  assert.equal(h.calls.at(-1), 900)
+  assert.deepEqual(h.focus, [{ preventScroll: true }])
 })
 
 test('última seleção reinicia o timer e vence a navegação anterior', async (t) => {

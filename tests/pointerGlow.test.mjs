@@ -1,8 +1,11 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { initializePointerGlow } from '../src/lib/pointerGlow.ts'
+import { motionSettings } from '../src/content/motion.ts'
 
 function setup(t) {
+  const originalMode = motionSettings.mode
+  motionSettings.mode = 'system'
   const keys = ['window', 'requestAnimationFrame', 'cancelAnimationFrame']
   const originals = keys.map((key) => [
     key,
@@ -11,7 +14,12 @@ function setup(t) {
   const fine = Object.assign(new EventTarget(), { matches: true })
   const reduced = Object.assign(new EventTarget(), { matches: false })
   globalThis.window = {
-    matchMedia: (query) => (query.includes('pointer: fine') ? fine : reduced),
+    matchMedia: (query) =>
+      query.includes('pointer: fine')
+        ? fine
+        : query === 'not all'
+          ? Object.assign(new EventTarget(), { matches: false })
+          : reduced,
   }
   const frames = new Map()
   let id = 0
@@ -21,6 +29,7 @@ function setup(t) {
   }
   globalThis.cancelAnimationFrame = (id) => frames.delete(id)
   t.after(() => {
+    motionSettings.mode = originalMode
     for (const [key, descriptor] of originals) {
       if (descriptor) Object.defineProperty(globalThis, key, descriptor)
       else delete globalThis[key]
@@ -64,6 +73,18 @@ function setup(t) {
   }
   return { make, move, flush, frames, fine, reduced }
 }
+
+test('movimento completo mantém glow mesmo com sistema reduzido', (t) => {
+  const h = setup(t)
+  h.reduced.matches = true
+  motionSettings.mode = 'full'
+  const node = h.make()
+  const cleanup = initializePointerGlow(node)
+  h.move(node, 150, 100)
+  h.flush()
+  assert.equal(node.attributes.get('data-pointer-glow'), 'true')
+  cleanup()
+})
 
 test('glow independente, coordenadas relativas e eventos agrupados em um frame', (t) => {
   const h = setup(t),

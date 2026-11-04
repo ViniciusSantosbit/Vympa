@@ -71,9 +71,7 @@ export async function navigateToSection(
   const controller = new AbortController()
   pending = controller
   const { signal } = controller
-  const reducedMotion =
-    getMotionPreference().matches ||
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const reducedMotion = getMotionPreference().matches
   const heroDelay =
     waitForHero && !reducedMotion
       ? waitForDelay(800, signal)

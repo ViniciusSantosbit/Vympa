@@ -163,11 +163,11 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .process-card,
-  .process-icon {
+  :root:not([data-motion='full']) .process-card,
+  :root:not([data-motion='full']) .process-icon {
     transition: none;
   }
-  .process-card:hover {
+  :root:not([data-motion='full']) .process-card:hover {
     transform: none;
   }
 }
@@ -207,7 +207,7 @@
     mask-composite: exclude;
     transition: opacity 320ms ease-out;
   }
-  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  @media (hover: hover) and (pointer: fine) {
     .process-card[data-pointer-glow]::before {
       opacity: 0.85;
       transition-duration: 240ms;
@@ -216,11 +216,11 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .process-card[data-pointer-glow] {
+  :root:not([data-motion='full']) .process-card[data-pointer-glow] {
     transform: none;
     background: var(--color-surface);
   }
-  .process-card::before {
+  :root:not([data-motion='full']) .process-card::before {
     display: none;
     transition: none;
   }

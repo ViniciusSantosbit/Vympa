@@ -1,7 +1,9 @@
-/** Decorative interaction, independent of the plans tilt and global motion mode. */
+import { getMotionPreference } from './motionPreference.ts'
+
+/** Decorative interaction using the site's shared motion preference. */
 export function initializePointerGlow(node: HTMLElement): () => void {
   const pointer = window.matchMedia('(hover: hover) and (pointer: fine)')
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)')
+  const reduced = getMotionPreference()
   let frame = 0
   let point: { x: number; y: number } | undefined
   const reset = () => {
