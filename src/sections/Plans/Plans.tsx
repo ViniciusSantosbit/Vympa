@@ -3,6 +3,7 @@ import { proposalsContent } from '@/content/navigation'
 import { planos, plansLabels } from '@/content/planos'
 import { useSegment } from '@/features/segment-selection/useSegment'
 import { PlanCard } from './PlanCard'
+import { SegmentVisualAccent } from './SegmentVisualAccent'
 import './plans.css'
 export function Plans(): ReactElement {
   const { selectedSegment } = useSegment()
@@ -34,6 +35,7 @@ export function Plans(): ReactElement {
             segment={selectedSegment}
           />
         ))}
+        <SegmentVisualAccent segment={selectedSegment} />
       </div>
       <div className="plans-notes">
         <p>{plansLabels.scope}</p>

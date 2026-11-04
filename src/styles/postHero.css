@@ -16,72 +16,79 @@
   #como-funciona {
     min-height: auto;
   }
+  /* Plans alone move from the previous 90% proportions to approximately 80%. */
+  #planos {
+    --post-content-width: 960px;
+    --post-card-gap: 19.2px;
+    --post-section-space: 70.4px;
+    padding-inline: 32px;
+  }
   #planos .section-copy {
-    max-width: 972px;
+    max-width: 864px;
   }
   #planos .section-copy h2 {
-    max-width: 900px;
-    font-size: clamp(32.4px, 3.96vw, 57.6px);
-    margin-bottom: 25.2px;
+    max-width: 800px;
+    font-size: clamp(28.8px, 3.52vw, 51.2px);
+    margin-bottom: 22.4px;
   }
   #planos .section-description {
-    max-width: 738px;
-    font-size: 15.3px;
+    max-width: 656px;
+    font-size: 13.6px;
   }
   #planos .section-eyebrow {
-    padding: 5.4px 12.6px;
-    margin-bottom: 27px;
+    padding: 4.8px 11.2px;
+    margin-bottom: 24px;
   }
   #planos .plans-grid {
     max-width: var(--post-content-width);
     gap: var(--post-card-gap);
-    margin-top: 43.2px;
+    margin-top: 38.4px;
   }
   #planos .plan-card {
-    padding: 25.2px;
-    border-radius: 18px;
+    padding: 22.4px;
+    border-radius: 16px;
   }
   #planos .plan-identity {
-    min-height: 28.8px;
-    padding-bottom: 21.6px;
-    margin-bottom: 21.6px;
-    gap: 18px;
+    min-height: 25.6px;
+    padding-bottom: 19.2px;
+    margin-bottom: 19.2px;
+    gap: 16px;
   }
   #planos .plan-identity svg {
-    width: 25.2px;
-    height: 25.2px;
+    width: 22.4px;
+    height: 22.4px;
   }
   #planos .plan-card h3 {
-    font-size: clamp(21.6px, 1.89vw, 27px);
-    min-height: 61.2px;
-    margin-bottom: 18px;
+    font-size: clamp(19.2px, 1.68vw, 24px);
+    min-height: 54.4px;
+    margin-bottom: 16px;
   }
   #planos .plan-description {
-    font-size: 14px;
-    min-height: 86.4px;
-    margin-bottom: 25.2px;
+    font-size: 13px;
+    min-height: 76.8px;
+    margin-bottom: 22.4px;
   }
   #planos .plan-list-label {
-    margin-bottom: 18px;
+    margin-bottom: 16px;
   }
   #planos .plan-features {
-    gap: 10.8px;
+    gap: 9.6px;
   }
   #planos .plan-features li {
-    font-size: 13px;
-    gap: 10.8px;
+    font-size: 12px;
+    gap: 9.6px;
   }
   #planos .plan-contact {
-    margin-top: 32.4px;
+    margin-top: 28.8px;
   }
   #planos .plan-cta {
-    min-height: 48px;
-    padding: 12.6px 16.2px;
-    font-size: 13px;
+    min-height: 44px;
+    padding: 11.2px 14.4px;
+    font-size: 12px;
   }
   #planos .plans-notes {
-    max-width: 945px;
-    margin-top: 25.2px;
+    max-width: 840px;
+    margin-top: 22.4px;
   }
   #como-funciona .process-container {
     max-width: var(--post-content-width);

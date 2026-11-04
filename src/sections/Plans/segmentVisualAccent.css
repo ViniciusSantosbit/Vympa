@@ -1,0 +1,48 @@
+.plans-grid {
+  position: relative;
+  isolation: isolate;
+}
+.segment-visual-accent {
+  display: none;
+  pointer-events: none;
+  user-select: none;
+}
+@media (min-width: 1280px) {
+  .segment-visual-accent {
+    display: block;
+    position: absolute;
+    --accent-size: clamp(391px, 37.333vw, 551px);
+    z-index: -1;
+    left: calc(100% - var(--accent-size) * 0.6);
+    top: 50%;
+    width: min(
+      var(--accent-size),
+      calc(var(--accent-size) * 0.6 + (100vw - 960px) / 2 - 32px)
+    );
+    height: 120%;
+    overflow: clip;
+    transform: translateY(-50%);
+  }
+  .segment-visual-object {
+    position: absolute;
+    inset: 0;
+    width: var(--accent-size);
+    height: 100%;
+    opacity: 0;
+    filter: grayscale(1);
+    transform: translateY(8px);
+    transition:
+      opacity 380ms ease,
+      transform 380ms ease;
+  }
+  .segment-visual-object[data-active='true'] {
+    opacity: 0.16;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .segment-visual-object {
+    transition: none;
+    transform: none;
+  }
+}
