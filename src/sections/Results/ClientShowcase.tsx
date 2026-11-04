@@ -43,7 +43,9 @@ export function ClientShowcase({
         <h2 data-reveal id="clients-title" tabIndex={-1}>
           {clientsContent.title}
         </h2>
-        <p>{clientsContent.description}</p>
+        <p className="clients-subtitle">
+          {clientsContent.subtitle} <span>{clientsContent.subtitleBrand}</span>
+        </p>
       </div>
       <ClientCarousel clients={available} onLoad={onLoad} onError={onError} />
     </section>

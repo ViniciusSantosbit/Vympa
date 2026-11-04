@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react'
 import type { ReactElement } from 'react'
 import { SegmentSelector } from './SegmentSelector'
 import { InstitutionalNavigation } from './InstitutionalNavigation'
-import { SectionLink } from '@/components/common/SectionLink'
 import { MobileMenu } from './MobileMenu'
 import './navbar.css'
 export function Navbar({
@@ -34,7 +33,14 @@ export function Navbar({
       </a>
       <header className={scrolled ? 'site-header is-scrolled' : 'site-header'}>
         <div className="navbar">
-          <SectionLink className="brand" section="inicio">
+          <a
+            className="brand"
+            href="/"
+            aria-label="VYMPA — reiniciar e voltar ao início"
+            onClick={() => {
+              window.history.scrollRestoration = 'manual'
+            }}
+          >
             <span className="brand-symbol">
               <img
                 src="/images/vympa-logo.png"
@@ -44,7 +50,7 @@ export function Navbar({
               />
             </span>
             <span className="brand-name">VYMPA</span>
-          </SectionLink>
+          </a>
           <nav className="desktop-navigation" aria-label="Navegação principal">
             <SegmentSelector />
             <span className="navbar-divider" aria-hidden="true" />

@@ -16,9 +16,9 @@ export const clientes: readonly Client[] = [
 ]
 export const clientsContent = {
   eyebrow: 'QUEM CONFIA NA VYMPA',
-  title: 'Empresas que fazem parte da nossa trajetória.',
-  description:
-    'Nossa trajetória começou com a Montezuma & Conde, primeira empresa atendida pela VYMPA.',
+  title: 'Nossa tecnologia presente em empresas reais.',
+  subtitle: 'A confiança de quem escolhe a',
+  subtitleBrand: 'VYMPA',
   carouselLabel: 'Empresas atendidas pela VYMPA',
   specialtyLabel: 'Especialidade',
   experienceLabel: 'Experiência',
