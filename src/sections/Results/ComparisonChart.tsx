@@ -2,13 +2,14 @@ import { useEffect, useRef, useState } from 'react'
 import type { ReactElement } from 'react'
 import type { ComparisonPoint } from '@/types/content'
 import { comparisonContent as text } from '@/content/simulacao'
-import { formatIndex } from '@/lib/growthComparison'
+import { formatIndex, createSmoothPath } from '@/lib/growthComparison'
 export function ComparisonChart({
   points,
 }: {
   points: readonly ComparisonPoint[]
 }): ReactElement {
   const container = useRef<HTMLDivElement>(null)
+  const curves = useRef<SVGGElement>(null)
   const [width, setWidth] = useState(900)
   const [month, setMonth] = useState(0)
   useEffect(() => {
@@ -19,6 +20,47 @@ export function ComparisonChart({
     })
     observer.observe(node)
     return () => observer.disconnect()
+  }, [])
+  useEffect(() => {
+    const node = curves.current
+    if (!node || typeof IntersectionObserver === 'undefined') return
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)')
+    let played = false
+    let animation: Animation | undefined
+    const stop = () => {
+      if (reduced.matches) {
+        played = true
+        animation?.cancel()
+        observer.disconnect()
+      }
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (played || !entries.some((entry) => entry.isIntersecting)) return
+        played = true
+        observer.disconnect()
+        if (reduced.matches) return
+        try {
+          animation = node.animate(
+            [
+              { clipPath: 'inset(0 100% 0 0)' },
+              { clipPath: 'inset(0 0% 0 0)' },
+            ],
+            { duration: 1100, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' },
+          )
+        } catch {
+          /* Static curves stay visible if Web Animations is unavailable. */
+        }
+      },
+      { threshold: 0.2 },
+    )
+    observer.observe(node)
+    reduced.addEventListener('change', stop)
+    return () => {
+      observer.disconnect()
+      animation?.cancel()
+      reduced.removeEventListener('change', stop)
+    }
   }, [])
   const point = points[Math.min(month, points.length - 1)]!
   const horizon = points.length - 1
@@ -38,9 +80,7 @@ export function ComparisonChart({
   const y = (value: number): number =>
     bottom - (value / ceiling) * (bottom - top)
   const path = (series: 'tradicional' | 'comIA'): string =>
-    points
-      .map((p, i) => (i === 0 ? 'M' : 'L') + x(p.mes) + ',' + y(p[series]))
-      .join(' ')
+    createSmoothPath(points.map((p) => ({ x: x(p.mes), y: y(p[series]) })))
   return (
     <figure data-reveal className="comparison-figure">
       <figcaption className="chart-metric">
@@ -118,25 +158,15 @@ export function ComparisonChart({
                   {p.mes}
                 </text>
               )}
-              <circle
-                className="chart-dot-traditional"
-                cx={x(p.mes)}
-                cy={y(p.tradicional)}
-                r="2.5"
-              />
-              <circle
-                className="chart-dot-ia"
-                cx={x(p.mes)}
-                cy={y(p.comIA)}
-                r="2.5"
-              />
             </g>
           ))}
-          <path
-            className="chart-line chart-line--traditional"
-            d={path('tradicional')}
-          />
-          <path className="chart-line chart-line--ia" d={path('comIA')} />
+          <g ref={curves} className="chart-curves">
+            <path
+              className="chart-line chart-line--traditional"
+              d={path('tradicional')}
+            />
+            <path className="chart-line chart-line--ia" d={path('comIA')} />
+          </g>
           <line
             className="chart-cursor"
             x1={x(point.mes)}
