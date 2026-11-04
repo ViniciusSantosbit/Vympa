@@ -14,7 +14,7 @@ export function HowItWorks(): ReactElement {
       aria-labelledby="como-funciona-title"
     >
       <div className="process-container">
-        <div className="section-copy">
+        <div className="section-copy" data-section-anchor>
           <p data-reveal className="section-eyebrow">
             {content.eyebrow}
           </p>

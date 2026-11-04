@@ -19,7 +19,7 @@ export function GrowthComparison({
   }
   return (
     <div className="growth-comparison">
-      <div className="comparison-heading">
+      <div className="comparison-heading" data-section-anchor>
         <p className="clients-eyebrow">{text.eyebrow}</p>
         <h2 data-reveal id="comparison-title" tabIndex={-1}>
           {text.title}

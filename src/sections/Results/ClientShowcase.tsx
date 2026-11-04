@@ -38,7 +38,7 @@ export function ClientShowcase({
       hidden={!visible}
       aria-labelledby="clients-title"
     >
-      <div className="clients-heading">
+      <div className="clients-heading" data-section-anchor>
         <p className="clients-eyebrow">{clientsContent.eyebrow}</p>
         <h2 data-reveal id="clients-title" tabIndex={-1}>
           {clientsContent.title}

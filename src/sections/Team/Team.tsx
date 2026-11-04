@@ -19,7 +19,7 @@ export function Team({
       className="team-section"
       aria-labelledby="team-title"
     >
-      <div className="team-container">
+      <div className="team-container" data-section-anchor>
         <h2 data-reveal id="team-title" tabIndex={-1}>
           {teamContent.title}
         </h2>

@@ -71,7 +71,9 @@ export async function navigateToSection(
   const controller = new AbortController()
   pending = controller
   const { signal } = controller
-  const reducedMotion = getMotionPreference().matches
+  const reducedMotion =
+    getMotionPreference().matches ||
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
   const heroDelay =
     waitForHero && !reducedMotion
       ? waitForDelay(800, signal)
@@ -126,7 +128,13 @@ export async function navigateToSection(
     cancelSectionNavigation()
     return
   }
-  const heading = section.querySelector<HTMLElement>('h1, h2')
+  // Anchors live on stable wrappers, outside reveal transforms. Hidden client
+  // content is skipped so Results can start at its comparison introduction.
+  const anchor = Array.from(
+    section.querySelectorAll<HTMLElement>('[data-section-anchor]'),
+  ).find((node) => node.getClientRects().length > 0)
+  const target = id === 'inicio' ? section : (anchor ?? section)
+  const heading = target.querySelector<HTMLElement>('h1, h2')
   const header = document.querySelector('.site-header')
   const offset = (header?.getBoundingClientRect().height ?? 0) + 16
   const maximum = Math.max(
@@ -135,7 +143,7 @@ export async function navigateToSection(
   )
   const destination = Math.min(
     maximum,
-    Math.max(0, section.getBoundingClientRect().top + window.scrollY - offset),
+    Math.max(0, target.getBoundingClientRect().top + window.scrollY - offset),
   )
   scrolling = true
   if (reducedMotion) {

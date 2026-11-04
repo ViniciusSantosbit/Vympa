@@ -13,7 +13,7 @@ export function Plans(): ReactElement {
       aria-labelledby="planos-title"
       data-segment={selectedSegment ?? 'geral'}
     >
-      <div className="section-copy">
+      <div className="section-copy" data-section-anchor>
         <p className="section-eyebrow">{proposalsContent.eyebrow}</p>
         <h2 data-reveal id="planos-title" tabIndex={-1}>
           {selectedSegment

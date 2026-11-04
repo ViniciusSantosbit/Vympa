@@ -52,6 +52,7 @@ function harness(t, reduced = false, desktop = false) {
       id === 'resultados'
         ? null
         : {
+            querySelectorAll: () => [],
             getBoundingClientRect: () => ({
               top: (id === 'planos' ? 1000 : 2000) - win.scrollY,
             }),
@@ -236,3 +237,29 @@ test('inercia termina tambem com arredondamento a pixels inteiros', async (t) =>
   assert.equal(h.frames.size, 0)
   cleanup()
 })
+
+for (const reduced of [false, true]) {
+  test(`alinha conteúdo visível após padding, com navbar real e foco local: reduced=${reduced}`, async (t) => {
+    const h = harness(t, reduced)
+    const focus = []
+    const hidden = { getClientRects: () => [] }
+    const anchor = {
+      getClientRects: () => [{}],
+      getBoundingClientRect: () => ({ top: 1079.2 - h.win.scrollY }),
+      querySelector: () => ({ focus: (options) => focus.push(options) }),
+    }
+    globalThis.document.querySelector = () => ({
+      getBoundingClientRect: () => ({ height: 72 }),
+    })
+    globalThis.document.getElementById = () => ({
+      querySelectorAll: () => [hidden, anchor],
+      getBoundingClientRect: () => ({ top: 1000 - h.win.scrollY }),
+    })
+    const nav = navigateToSection('resultados')
+    await h.render()
+    await h.complete()
+    await nav
+    assert.equal(h.calls.at(-1), 1079.2 - 72 - 16)
+    assert.deepEqual(focus, [{ preventScroll: true }])
+  })
+}
