@@ -162,6 +162,7 @@
     translateY(calc(var(--client-depth) * 22px)) scale(var(--client-scale))
     rotateY(var(--client-rotation));
   opacity: 1;
+  filter: blur(0);
   overflow: hidden;
   transition:
     transform 550ms cubic-bezier(0.22, 1, 0.36, 1),
@@ -176,15 +177,14 @@
 }
 #resultados .clients-section .client-logo[data-depth='1'] {
   opacity: 0.62;
-  filter: blur(2px);
+  filter: blur(7px);
 }
 #resultados .clients-section .client-logo[data-depth='2'] {
   opacity: 0.3;
-  filter: blur(4px);
+  filter: blur(12px);
 }
 #resultados .clients-section .client-logo[data-depth='3'] {
   opacity: 0;
-  visibility: hidden;
   pointer-events: none;
 }
 #resultados .clients-section .client-brand-stage {

@@ -40,6 +40,7 @@ export function ClientLogo({
       data-active={offset === 0}
       data-depth={Math.min(depth, 3)}
       aria-hidden={depth > 2 ? true : undefined}
+      inert={depth > 2}
       style={
         {
           '--client-offset': offset,
