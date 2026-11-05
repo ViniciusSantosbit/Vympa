@@ -6,7 +6,7 @@ export const equipe: readonly TeamMember[] = [
     nome: 'VINICIUS EDUARDO SANTOS',
     cargo: 'Diretor de Negócios',
     descricao: '',
-    fotoUrl: '/images/equipe/vinicius-eduardo-santos-escritorio.webp',
+    fotoUrl: '/images/equipe/vinicius-eduardo-santos-atual.webp',
     textoAlternativo: 'Vinicius Eduardo Santos, Diretor de Negócios da VYMPA',
     posicaoFoto: '50% 40%',
     ordem: 1,
