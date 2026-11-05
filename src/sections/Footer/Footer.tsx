@@ -18,7 +18,7 @@ export function Footer() {
   const email = contatos.email?.trim()
   const emailUrl =
     email && /^[^\s@?&#]+@[^\s@?&#]+\.[^\s@?&#]+$/.test(email)
-      ? `mailto:${email}`
+      ? `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(email)}`
       : null
   const channels = [
     { label: 'Instagram', href: instagram },
@@ -86,14 +86,8 @@ export function Footer() {
                       <a
                         key={channel.label}
                         href={channel.href!}
-                        target={
-                          channel.label === 'E-mail' ? undefined : '_blank'
-                        }
-                        rel={
-                          channel.label === 'E-mail'
-                            ? undefined
-                            : 'noopener noreferrer'
-                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
                       >
                         {channel.label} <span aria-hidden="true">↗</span>
                       </a>

@@ -14,7 +14,7 @@ export function FloatingContactButtons() {
   const email = contatos.email?.trim()
   const emailUrl =
     email && /^[^\s@?&#]+@[^\s@?&#]+\.[^\s@?&#]+$/.test(email)
-      ? `mailto:${email}`
+      ? `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(email)}`
       : null
   if (!whatsapp && !instagram && !emailUrl) return null
   return (
@@ -80,6 +80,8 @@ export function FloatingContactButtons() {
         <a
           className="floating-contact floating-email"
           href={emailUrl}
+          target="_blank"
+          rel="noopener noreferrer"
           aria-label="Enviar e-mail para a VYMPA"
           title="E-mail"
         >
