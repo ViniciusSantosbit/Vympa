@@ -279,7 +279,8 @@
 }
 
 /* Hierarquia do cabecalho inspirada na referencia aprovada. */
-.proposals-section .section-eyebrow {
+.proposals-section .section-eyebrow,
+.how-section .section-eyebrow {
   display: inline-block;
   border: 1px solid currentColor;
   padding: 6px 14px;

@@ -31,7 +31,7 @@
   margin: 44px auto 0;
   min-width: 0;
 }
-.clients-subtitle span {
+.clients-subtitle strong {
   color: var(--color-accent);
 }
 .clients-viewport {

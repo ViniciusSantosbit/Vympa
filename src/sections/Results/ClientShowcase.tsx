@@ -44,7 +44,9 @@ export function ClientShowcase({
           {clientsContent.title}
         </h2>
         <p className="clients-subtitle">
-          {clientsContent.subtitle} <span>{clientsContent.subtitleBrand}</span>
+          {clientsContent.subtitle}{' '}
+          <strong>{clientsContent.subtitleBrand}</strong>{' '}
+          {clientsContent.subtitleSuffix}
         </p>
       </div>
       <ClientCarousel clients={available} onLoad={onLoad} onError={onError} />

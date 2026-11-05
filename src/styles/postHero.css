@@ -210,7 +210,7 @@
     max-width: 1480px;
   }
   #nosso-time h2 {
-    font-size: clamp(28.8px, 2.7vw, 39.6px);
+    font-size: clamp(42px, 3.89vw, 57px);
     margin-bottom: 45px;
   }
   #nosso-time .team-grid {

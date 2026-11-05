@@ -17,8 +17,10 @@ export const clientes: readonly Client[] = [
 export const clientsContent = {
   eyebrow: 'QUEM CONFIA NA VYMPA',
   title: 'Nossa tecnologia presente em empresas reais.',
-  subtitle: 'A confiança de quem escolhe a',
+  subtitle: 'Conheça empresas que contam com a',
   subtitleBrand: 'VYMPA',
+  subtitleSuffix:
+    'para modernizar processos, desenvolver sistemas e impulsionar suas operações.',
   carouselLabel: 'Empresas atendidas pela VYMPA',
   specialtyLabel: 'Especialidade',
   experienceLabel: 'Experiência',

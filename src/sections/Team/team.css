@@ -1,8 +1,16 @@
+@font-face {
+  font-family: 'Tangerine';
+  src: url('/fonts/tangerine/Tangerine-Bold.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
 #nosso-time {
   scroll-margin-top: calc(var(--navbar-height) + 16px);
 }
 .team-section {
-  background: var(--color-team-background);
+  background: var(--color-background);
   padding: 88px 40px;
 }
 .team-container {
@@ -13,8 +21,9 @@
   text-align: center;
   color: var(--color-primary);
   margin: 0 0 50px;
-  font-size: clamp(32px, 3vw, 44px);
-  font-weight: 550;
+  font-family: 'Tangerine', cursive;
+  font-size: clamp(46px, 4.32vw, 64px);
+  font-weight: 700;
   letter-spacing: -0.025em;
   line-height: 1.2;
 }
