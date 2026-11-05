@@ -4,6 +4,7 @@
   left: max(16px, env(safe-area-inset-left, 0px));
   bottom: calc(16px + env(safe-area-inset-bottom, 0px));
   display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 12px;
 }
@@ -23,7 +24,8 @@
   background: #25d366;
   color: #062b17;
 }
-.floating-instagram {
+.floating-instagram,
+.floating-email {
   width: 48px;
   height: 48px;
   background: var(--color-surface);
@@ -40,7 +42,8 @@ body:has(.floating-contacts) #main-content {
   .floating-whatsapp:hover {
     background: #68dda8;
   }
-  .floating-instagram:hover {
+  .floating-instagram:hover,
+  .floating-email:hover {
     background: #26374d;
   }
 }
@@ -49,7 +52,8 @@ body:has(.floating-contacts) #main-content {
     width: 48px;
     height: 48px;
   }
-  .floating-instagram {
+  .floating-instagram,
+  .floating-email {
     width: 44px;
     height: 44px;
   }

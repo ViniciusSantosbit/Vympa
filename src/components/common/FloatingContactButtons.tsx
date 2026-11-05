@@ -11,7 +11,12 @@ export function FloatingContactButtons() {
     buildContactMessage(selectedSegment),
   )
   const instagram = validateInstagramUrl(contatos.instagram)
-  if (!whatsapp && !instagram) return null
+  const email = contatos.email?.trim()
+  const emailUrl =
+    email && /^[^\s@?&#]+@[^\s@?&#]+\.[^\s@?&#]+$/.test(email)
+      ? `mailto:${email}`
+      : null
+  if (!whatsapp && !instagram && !emailUrl) return null
   return (
     <nav className="floating-contacts" aria-label="Canais oficiais de contato">
       {whatsapp && (
@@ -68,6 +73,30 @@ export function FloatingContactButtons() {
               fill="currentColor"
               stroke="none"
             />
+          </svg>
+        </a>
+      )}
+      {emailUrl && (
+        <a
+          className="floating-contact floating-email"
+          href={emailUrl}
+          aria-label="Enviar e-mail para a VYMPA"
+          title="E-mail"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            width="24"
+            height="24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <rect x="3" y="5" width="18" height="14" rx="2" />
+            <path d="m3 6 9 7 9-7" />
           </svg>
         </a>
       )}
