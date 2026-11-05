@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { FloatingContactButtons } from '@/components/common/FloatingContactButtons'
 import { initializeDesktopScroll } from '@/lib/sectionNavigation'
 import { Team } from '@/sections/Team/Team'
+import { Footer } from '@/sections/Footer/Footer'
 import { Results } from '@/sections/Results/Results'
 import { Plans } from '@/sections/Plans/Plans'
 import { HowItWorks } from '@/sections/Plans/HowItWorks'
@@ -23,6 +24,7 @@ export default function App(): ReactElement {
         <Results onAvailabilityChange={setResultsAvailable} />
         <Team />
       </main>
+      <Footer />
       <FloatingContactButtons />
     </>
   )

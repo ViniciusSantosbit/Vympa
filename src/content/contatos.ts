@@ -2,7 +2,7 @@ import type { Contacts, SegmentId, ServiceId } from '../types/content'
 export const contatos: Contacts = {
   whatsapp: null,
   instagram: 'https://www.instagram.com/vympadev',
-  email: null,
+  email: 'vympa02@gmail.com',
   mensagemGeral:
     'Olá! Conheci a VYMPA pelo site e gostaria de saber mais sobre as soluções de inteligência artificial e automação para empresas.',
 }
