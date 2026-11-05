@@ -1,16 +1,16 @@
 import type { TeamMember } from '@/types/content'
-// Quatro posições reais de sócios. Nomes, funções e fotos aguardam fornecimento e validação.
+// Quatro posições reais de sócios. Perfis pendentes aguardam fornecimento e validação.
 export const equipe: readonly TeamMember[] = [
   {
     id: 'socio-01',
-    nome: '',
-    cargo: '',
+    nome: 'VINICIUS EDUARDO SANTOS',
+    cargo: 'Diretor de Negócios',
     descricao: '',
-    fotoUrl: null,
-    textoAlternativo: '',
+    fotoUrl: '/images/equipe/vinicius-eduardo-santos-escritorio.webp',
+    textoAlternativo: 'Vinicius Eduardo Santos, Diretor de Negócios da VYMPA',
     posicaoFoto: '50% 40%',
     ordem: 1,
-    status: 'pendente',
+    status: 'publicado',
   },
   {
     id: 'socio-02',
