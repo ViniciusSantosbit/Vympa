@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 import { proposalsContent } from '@/content/navigation'
+import { demonstracaoLabel, etapasLabels, jornadas } from '@/content/jornadas'
 import { planos, plansLabels } from '@/content/planos'
 import { useSegment } from '@/features/segment-selection/useSegment'
 import { PlanCard } from './PlanCard'
@@ -7,6 +8,7 @@ import { SegmentVisualAccent } from './SegmentVisualAccent'
 import './plans.css'
 export function Plans(): ReactElement {
   const { selectedSegment } = useSegment()
+  const journey = selectedSegment ? jornadas[selectedSegment] : null
   return (
     <section
       id="planos"
@@ -27,6 +29,20 @@ export function Plans(): ReactElement {
             : proposalsContent.description}
         </p>
       </div>
+      {journey && (
+        <section className="plans-demo" aria-labelledby="plans-demo-title">
+          <p className="section-eyebrow">{demonstracaoLabel}</p>
+          <h3 id="plans-demo-title">{journey.demonstracao}</h3>
+          <ol>
+            {journey.etapas.map((step, index) => (
+              <li key={step}>
+                <strong>{etapasLabels[index]}</strong>
+                <p>{step}</p>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
       <div className="plans-grid">
         {planos.map((service) => (
           <PlanCard

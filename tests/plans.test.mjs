@@ -84,10 +84,15 @@ test('renderização dos dois serviços e contratos de planos', async (t) => {
         assert.match(html, /id="planos"/)
         assert.match(html, /id="planos-title"/)
         assert.doesNotMatch(html, /R\$|wa\.me|href=""/)
-        assert.equal((html.match(/disabled=""/g) || []).length, 2)
+        assert.doesNotMatch(html, /disabled=""|Contato oficial em configuração/)
         assert.equal(
-          (html.match(/Contato oficial em configuração\./g) || []).length,
+          (html.match(/href="https:\/\/mail\.google\.com\/mail\//g) || [])
+            .length,
           2,
+        )
+        assert.equal(
+          html.includes('Exemplo ilustrativo de aplicação'),
+          Boolean(selectedSegment),
         )
         for (const service of planos) {
           const variant = selectedSegment

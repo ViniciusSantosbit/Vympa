@@ -422,3 +422,8 @@
     var(--color-background) 96%
   );
 }
+.hero-contact-note {
+  margin: 14px 0 0;
+  font-size: 0.875rem;
+  line-height: 1.55;
+}

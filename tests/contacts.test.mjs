@@ -126,7 +126,7 @@ test('canais flutuantes e CTAs compartilham configuração e segmento', async ()
         [null, 'https://instagram.com/perfil_de_teste/', 1],
         ['+1 (202) 555-0123', 'https://instagram.com/perfil_de_teste/', 2],
       ]) {
-        Object.assign(contatos, { whatsapp, instagram })
+        Object.assign(contatos, { whatsapp, instagram, email: null })
         for (const segment of [
           null,
           'advocacia',
@@ -161,7 +161,9 @@ test('canais flutuantes e CTAs compartilham configuração e segmento', async ()
                   encodeURIComponent(buildServiceMessage(service.id, segment)),
                 ),
               )
-            else {
+            else if (instagram?.startsWith('https://')) {
+              assert.ok(card.includes(instagram))
+            } else {
               assert.match(card, /disabled=""/)
               assert.match(card, /aria-describedby=/)
             }

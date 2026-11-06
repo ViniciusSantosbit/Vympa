@@ -2,13 +2,14 @@ import { getMotionPreference } from '@/lib/motionPreference'
 import { useEffect, useLayoutEffect, useRef } from 'react'
 import type { ReactElement } from 'react'
 import { heroContent } from '@/content/hero'
+import { jornadas } from '@/content/jornadas'
 import { segmentos } from '@/content/segmentos'
 import { useSegment } from '@/features/segment-selection/useSegment'
 import { HeroBackground } from './HeroBackground'
 import { HeroActions } from './HeroActions'
 import './hero.css'
 export function Hero(): ReactElement {
-  const { selectedSegment, selectionRevision } = useSegment()
+  const { selectedSegment, selectionRevision = 0 } = useSegment()
   const contentRef = useRef<HTMLDivElement>(null)
   const motionRef = useRef<Animation | null>(null)
   useEffect(() => () => motionRef.current?.cancel(), [])
@@ -33,7 +34,11 @@ export function Hero(): ReactElement {
     const target = targetPosition()
     const destination = `translateX(${target}px)`
     content.style.transform = destination
-    if (selectedSegment && !getMotionPreference().matches) {
+    if (
+      selectedSegment &&
+      selectionRevision > 0 &&
+      !getMotionPreference().matches
+    ) {
       const currentX = from === 'none' ? 0 : new DOMMatrixReadOnly(from).m41
       const trail = target >= currentX ? -1 : 1
       motionRef.current = content.animate(
@@ -58,6 +63,7 @@ export function Hero(): ReactElement {
   const currentSegment = segmentos.find(
     (segment) => segment.id === selectedSegment,
   )
+  const journey = selectedSegment ? jornadas[selectedSegment] : null
   return (
     <section
       id="inicio"
@@ -68,12 +74,19 @@ export function Hero(): ReactElement {
       <HeroBackground selectedSegment={selectedSegment} />
       <div className="hero-shell">
         <div className="hero-content" ref={contentRef}>
-          <p className="hero-eyebrow">{heroContent.eyebrow}</p>
+          <p className="hero-eyebrow">
+            {currentSegment
+              ? currentSegment.nome + ' · IA e automação'
+              : heroContent.eyebrow}
+          </p>
           <h1 id="hero-title" tabIndex={-1}>
-            {heroContent.title} <span>{heroContent.titleHighlight}</span>
+            {journey?.titulo ?? heroContent.title}{' '}
+            <span>{journey?.destaque ?? heroContent.titleHighlight}</span>
           </h1>
-          <p className="hero-description">{heroContent.description}</p>
-          <HeroActions />
+          <p className="hero-description">
+            {journey?.descricao ?? heroContent.description}
+          </p>
+          <HeroActions segment={selectedSegment} />
           <div className="hero-context" data-active={selectedSegment !== null}>
             <div className="hero-context-visual" aria-hidden="true">
               {segmentos.map((segment) => (

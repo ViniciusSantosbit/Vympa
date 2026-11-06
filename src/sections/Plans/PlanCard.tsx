@@ -2,9 +2,8 @@ import { useCardTilt } from '@/hooks/useCardTilt'
 import './cardTilt.css'
 import type { ReactElement } from 'react'
 import type { SegmentId, Service } from '@/types/content'
-import { contatos } from '@/content/contatos'
 import { plansLabels } from '@/content/planos'
-import { buildServiceMessage, buildWhatsAppUrl } from '@/lib/whatsapp'
+import { commercialContact } from '@/lib/commercialContact'
 export function PlanCard({
   service,
   segment,
@@ -18,10 +17,7 @@ export function PlanCard({
   const variant = segment ? service.segmentos[segment] : null
   const title = variant?.titulo ?? service.nome
   const features = variant?.exemplos ?? service.entregas
-  const contactUrl = buildWhatsAppUrl(
-    contatos.whatsapp,
-    buildServiceMessage(service.id, segment),
-  )
+  const contactUrl = commercialContact(segment, service.id)
   const titleId = service.id + '-title'
   const statusId = service.id + '-contact-status'
   return (
