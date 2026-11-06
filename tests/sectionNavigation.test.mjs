@@ -2,7 +2,6 @@ import { motionSettings } from '../src/content/motion.ts'
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import {
-  initializeDesktopScroll,
   navigateToSection,
   cancelSectionNavigation,
 } from '../src/lib/sectionNavigation.ts'
@@ -183,80 +182,6 @@ test('destino ausente e desmontagem não produzem navegação', async (t) => {
   await nav
   assert.equal(h.calls.length, 0)
   assert.equal(h.frames.size, 0)
-})
-
-function wheel(win, delta, extras = {}) {
-  const event = new Event('wheel', { cancelable: true })
-  Object.assign(event, {
-    deltaY: delta,
-    deltaX: 0,
-    deltaMode: 0,
-    ctrlKey: false,
-    shiftKey: false,
-    ...extras,
-  })
-  win.dispatchEvent(event)
-  return event
-}
-test('roda desktop tem percurso intermediario e acumula entradas', async (t) => {
-  const h = harness(t, false, true)
-  const cleanup = initializeDesktopScroll()
-  assert.equal(wheel(h.win, 120).defaultPrevented, true)
-  await h.step(16)
-  await h.step(100)
-  assert.ok(h.win.scrollY > 0 && h.win.scrollY < 120)
-  wheel(h.win, 120)
-  await h.complete()
-  assert.equal(h.win.scrollY, 240)
-  cleanup()
-  assert.equal(h.frames.size, 0)
-})
-for (const [name, reduced, desktop] of [
-  ['mobile', false, false],
-  ['movimento reduzido', true, true],
-]) {
-  test(`roda nativa preservada: ${name}`, (t) => {
-    const h = harness(t, reduced, desktop)
-    const cleanup = initializeDesktopScroll()
-    assert.equal(wheel(h.win, 120).defaultPrevented, false)
-    assert.equal(h.frames.size, 0)
-    cleanup()
-  })
-}
-test('zoom e gesto horizontal nao sao interceptados no desktop', (t) => {
-  const h = harness(t, false, true)
-  const cleanup = initializeDesktopScroll()
-  assert.equal(wheel(h.win, 120, { ctrlKey: true }).defaultPrevented, false)
-  assert.equal(wheel(h.win, 10, { deltaX: 100 }).defaultPrevented, false)
-  cleanup()
-})
-
-test('giros sucessivos mantem um unico frame e inversao descarta inercia anterior', async (t) => {
-  const h = harness(t, false, true)
-  const cleanup = initializeDesktopScroll()
-  wheel(h.win, 300)
-  await h.step(16)
-  await h.step(100)
-  wheel(h.win, 200)
-  assert.equal(h.frames.size, 1)
-  const position = h.win.scrollY
-  wheel(h.win, -40)
-  assert.equal(h.frames.size, 1)
-  await h.complete()
-  assert.equal(h.win.scrollY, Math.max(0, position - 40))
-  cleanup()
-})
-test('inercia termina tambem com arredondamento a pixels inteiros', async (t) => {
-  const h = harness(t, false, true)
-  const write = h.win.scrollTo
-  h.win.scrollTo = (options) =>
-    write({ ...options, top: Math.round(options.top) })
-  const cleanup = initializeDesktopScroll()
-  wheel(h.win, 120)
-  await h.complete()
-  assert.equal(h.win.scrollY, 120)
-  assert.equal(h.frames.size, 0)
-  cleanup()
 })
 
 for (const reduced of [false, true]) {

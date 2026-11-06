@@ -1,7 +1,6 @@
 import { useScrollReveal } from '@/hooks/useScrollReveal'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { FloatingContactButtons } from '@/components/common/FloatingContactButtons'
-import { initializeDesktopScroll } from '@/lib/sectionNavigation'
 import { Team } from '@/sections/Team/Team'
 import { Footer } from '@/sections/Footer/Footer'
 import { Results } from '@/sections/Results/Results'
@@ -13,7 +12,6 @@ import { Hero } from '@/sections/Hero/Hero'
 export default function App(): ReactElement {
   const revealRoot = useScrollReveal()
   const [resultsAvailable, setResultsAvailable] = useState(false)
-  useEffect(() => initializeDesktopScroll(), [])
   return (
     <>
       <Navbar resultsAvailable={resultsAvailable} />
