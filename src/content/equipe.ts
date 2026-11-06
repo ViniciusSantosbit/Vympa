@@ -3,11 +3,11 @@ import type { TeamMember } from '@/types/content'
 export const equipe: readonly TeamMember[] = [
   {
     id: 'socio-01',
-    nome: 'VINICIUS EDUARDO SANTOS',
+    nome: 'Vinicius Santos',
     cargo: 'Diretor de Negócios',
     descricao: '',
     fotoUrl: '/images/equipe/vinicius-eduardo-santos-atual.webp',
-    textoAlternativo: 'Vinicius Eduardo Santos, Diretor de Negócios da VYMPA',
+    textoAlternativo: 'Vinicius Santos, Diretor de Negócios da VYMPA',
     posicaoFoto: '50% 40%',
     ordem: 1,
     status: 'publicado',
@@ -25,14 +25,14 @@ export const equipe: readonly TeamMember[] = [
   },
   {
     id: 'socio-03',
-    nome: '',
-    cargo: '',
+    nome: 'Paulo Vítor',
+    cargo: 'Diretor de Desenvolvimento',
     descricao: '',
-    fotoUrl: null,
-    textoAlternativo: '',
+    fotoUrl: '/images/equipe/paulo-vitor.jpg',
+    textoAlternativo: 'Paulo Vítor, Diretor de Desenvolvimento da VYMPA',
     posicaoFoto: '50% 40%',
     ordem: 3,
-    status: 'pendente',
+    status: 'publicado',
   },
   {
     id: 'socio-04',
